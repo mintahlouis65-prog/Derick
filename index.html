@@ -1,0 +1,2395 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- META -->
+  <meta charset="UTF-8" />
+  <title>TINDERO TRADERS INTERNATIONAL – Shop Management System</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- STYLE -->
+  <style>
+    :root {
+      --bg-color: #0b1220;
+      --bg-elevated: #020617;
+      --text-color: #e5e7eb;
+      --muted-text: #9ca3af;
+      --accent-color: #22c55e;
+      --border-color: #1f2937;
+      --danger-color: #ef4444;
+      --success-color: #22c55e;
+      --font-size-base: 14px;
+    }
+
+    html[data-theme-mode="light"] {
+      --bg-color: #f3f4f6;
+      --bg-elevated: #ffffff;
+      --text-color: #111827;
+      --muted-text: #6b7280;
+      --border-color: #e5e7eb;
+    }
+
+    html[data-font-size="small"] {
+      --font-size-base: 13px;
+    }
+    html[data-font-size="medium"] {
+      --font-size-base: 14px;
+    }
+    html[data-font-size="large"] {
+      --font-size-base: 16px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1e293b 0, #020617 45%, #000 100%);
+      color: var(--text-color);
+      font-size: var(--font-size-base);
+    }
+
+    #app-root {
+      min-height: 100vh;
+    }
+
+    /* AUTH */
+    #auth-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: radial-gradient(circle at top left, #0f172a, #020617);
+      border-radius: 16px;
+      padding: 1.75rem 2rem 2rem;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(from 180deg, rgba(34, 197, 94, 0.15), transparent, rgba(59, 130, 246, 0.15), transparent);
+      opacity: 0.4;
+      filter: blur(40px);
+      z-index: -1;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .auth-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top, #22c55e, #16a34a, #0f172a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.6);
+      color: #020617;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .auth-header h1 {
+      margin: 0.5rem 0 0.25rem;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .auth-header p {
+      margin: 0;
+      color: var(--muted-text);
+      font-size: 0.85rem;
+    }
+
+    .auth-toggle {
+      display: flex;
+      margin-bottom: 1rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .auth-toggle button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0.5rem 0;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--muted-text);
+      font-size: 0.85rem;
+    }
+
+    .auth-toggle button.active {
+      background: radial-gradient(circle at top, #22c55e, #16a34a);
+      color: #020617;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+    }
+
+    .auth-form.hidden {
+      display: none;
+    }
+
+    .form-group {
+      margin-bottom: 0.75rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+
+    .input-with-icon {
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0 0.5rem;
+    }
+
+    .input-with-icon .icon {
+      margin-right: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--muted-text);
+    }
+
+    .input-with-icon input {
+      border: none;
+      background: transparent;
+      padding: 0.5rem 0;
+      flex: 1;
+      outline: none;
+      color: inherit;
+      font-size: 0.9rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.45rem 0.5rem;
+      border-radius: 8px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      color: inherit;
+      outline: none;
+      font-size: 0.9rem;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+    }
+
+    .primary-btn,
+    .secondary-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 0.55rem 0.75rem;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+    }
+
+    .primary-btn {
+      background: radial-gradient(circle at top, #22c55e, #16a34a);
+      color: #020617;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(34, 197, 94, 0.7);
+    }
+
+    .secondary-btn {
+      background: transparent;
+      color: var(--accent-color);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+    }
+
+    .secondary-btn:hover {
+      background: rgba(34, 197, 94, 0.1);
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .form-row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .checkbox-inline {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+
+    .link-button {
+      border: none;
+      background: none;
+      color: var(--accent-color);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+
+    .form-message {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      min-height: 1rem;
+    }
+
+    .form-message.error {
+      color: var(--danger-color);
+    }
+
+    .form-message.success {
+      color: var(--success-color);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* APP LAYOUT */
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      background: rgba(15, 23, 42, 0.96);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, #22c55e, #16a34a, #0f172a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #020617;
+      font-size: 1rem;
+    }
+
+    .header-left h1 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .header-left span {
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .header-datetime {
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.85rem;
+    }
+
+    .icon-button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 1rem;
+      color: var(--muted-text);
+    }
+
+    .icon-button:hover {
+      color: var(--accent-color);
+    }
+
+    .app-body {
+      display: flex;
+      min-height: calc(100vh - 56px);
+    }
+
+    .sidebar {
+      width: 220px;
+      background: rgba(15, 23, 42, 0.96);
+      border-right: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 0.75rem;
+    }
+
+    .sidebar-section + .sidebar-section {
+      margin-top: 1rem;
+    }
+
+    .sidebar-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--muted-text);
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-item {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      color: var(--muted-text);
+      font-size: 0.85rem;
+    }
+
+    .sidebar-item .icon {
+      font-size: 1rem;
+    }
+
+    .sidebar-item.active,
+    .sidebar-item:hover {
+      background: radial-gradient(circle at left, rgba(34, 197, 94, 0.18), transparent);
+      color: var(--accent-color);
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 0.75rem 1rem 1.5rem;
+    }
+
+    .top-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 0.75rem;
+    }
+
+    .search-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .search-wrapper input {
+      border: none;
+      background: transparent;
+      outline: none;
+      color: inherit;
+      font-size: 0.85rem;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .section.visible {
+      display: block;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .table-wrapper {
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      overflow: auto;
+    }
+
+    .table-wrapper.small {
+      max-height: 260px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th,
+    td {
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+
+    th {
+      text-align: left;
+      background: rgba(15, 23, 42, 0.95);
+      font-weight: 600;
+      color: var(--muted-text);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .table-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    .table-btn.edit {
+      color: var(--accent-color);
+    }
+
+    .table-btn.delete {
+      color: var(--danger-color);
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .stat-card {
+      background: radial-gradient(circle at top left, rgba(34, 197, 94, 0.18), rgba(15, 23, 42, 0.95));
+      border-radius: 12px;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .stat-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .pos-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .pos-summary {
+      margin-top: 0.5rem;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.75rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+      font-size: 0.85rem;
+    }
+
+    .summary-row.total {
+      font-weight: 600;
+      border-top: 1px dashed rgba(148, 163, 184, 0.5);
+      padding-top: 0.25rem;
+    }
+
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .settings-sidebar {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.5rem;
+    }
+
+    .settings-tab {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      color: var(--muted-text);
+      font-size: 0.85rem;
+    }
+
+    .settings-tab.active,
+    .settings-tab:hover {
+      background: radial-gradient(circle at left, rgba(34, 197, 94, 0.18), transparent);
+      color: var(--accent-color);
+    }
+
+    .settings-content {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.75rem;
+    }
+
+    .settings-panel {
+      display: none;
+    }
+
+    .settings-panel.visible {
+      display: block;
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-content {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem 0.9rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    .modal-content.large {
+      max-width: 520px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .modal-body {
+      max-height: 70vh;
+      overflow: auto;
+    }
+
+    .modal-form .form-group {
+      margin-bottom: 0.6rem;
+    }
+
+    .divider {
+      margin: 0.75rem 0;
+      border-top: 1px dashed rgba(148, 163, 184, 0.5);
+    }
+
+    @media (max-width: 900px) {
+      .app-body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+      }
+      .sidebar-section {
+        display: flex;
+        gap: 0.25rem;
+      }
+      .sidebar-title {
+        display: none;
+      }
+      .settings-layout {
+        grid-template-columns: 1fr;
+      }
+      .pos-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="app-root">
+    <!-- AUTH WRAPPER -->
+    <div id="auth-wrapper">
+      <div class="auth-card">
+        <div class="auth-header">
+          <div class="auth-logo">TT</div>
+          <h1>TINDERO TRADERS INTERNATIONAL</h1>
+          <p>Shop Management System</p>
+        </div>
+
+        <div class="auth-toggle">
+          <button id="btn-show-login" class="active">Login</button>
+          <button id="btn-show-signup">Sign Up</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form" class="auth-form">
+          <div class="form-group">
+            <label>Username or Email</label>
+            <div class="input-with-icon">
+              <span class="icon">👤</span>
+              <input type="text" id="login-identifier" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-with-icon">
+              <span class="icon">🔒</span>
+              <input type="password" id="login-password" required />
+            </div>
+          </div>
+          <div class="form-row-between">
+            <label class="checkbox-inline">
+              <input type="checkbox" id="login-remember" />
+              <span>Remember me</span>
+            </label>
+            <button type="button" id="btn-forgot-password" class="link-button">
+              Forgot password?
+            </button>
+          </div>
+          <button type="submit" class="primary-btn full-width">Login</button>
+          <div id="login-message" class="form-message"></div>
+        </form>
+
+        <!-- SIGNUP FORM -->
+        <form id="signup-form" class="auth-form hidden">
+          <div class="form-group">
+            <label>Full Name</label>
+            <div class="input-with-icon">
+              <span class="icon">🧑</span>
+              <input type="text" id="signup-fullname" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Username</label>
+            <div class="input-with-icon">
+              <span class="icon">👤</span>
+              <input type="text" id="signup-username" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <div class="input-with-icon">
+              <span class="icon">📧</span>
+              <input type="email" id="signup-email" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <div class="input-with-icon">
+              <span class="icon">📱</span>
+              <input type="text" id="signup-phone" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>ID Number (optional)</label>
+            <div class="input-with-icon">
+              <span class="icon">🪪</span>
+              <input type="text" id="signup-idnumber" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <div class="input-with-icon">
+              <span class="icon">🔒</span>
+              <input type="password" id="signup-password" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <div class="input-with-icon">
+              <span class="icon">✅</span>
+              <input type="password" id="signup-confirm-password" required />
+            </div>
+          </div>
+          <button type="submit" class="primary-btn full-width">Create Account</button>
+          <div id="signup-message" class="form-message"></div>
+        </form>
+      </div>
+    </div>
+
+    <!-- FORGOT PASSWORD MODAL -->
+    <div id="forgot-modal" class="modal hidden">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Reset Password</h2>
+          <button class="icon-button" id="close-forgot-modal">✖</button>
+        </div>
+        <div class="modal-body">
+          <p>Enter your username, email, or phone to receive a one-time code.</p>
+          <div class="form-group">
+            <label>Identifier</label>
+            <input type="text" id="forgot-identifier" />
+          </div>
+          <button id="btn-send-otp" class="primary-btn full-width">Send OTP</button>
+          <div class="divider"></div>
+          <p>Already have an OTP? Enter it below to reset your password.</p>
+          <div class="form-group">
+            <label>Identifier</label>
+            <input type="text" id="reset-identifier" />
+          </div>
+          <div class="form-group">
+            <label>OTP Code</label>
+            <input type="text" id="reset-otp" />
+          </div>
+          <div class="form-group">
+            <label>New Password</label>
+            <input type="password" id="reset-new-password" />
+          </div>
+          <button id="btn-reset-password" class="secondary-btn full-width">Reset Password</button>
+          <div id="forgot-message" class="form-message"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="app-wrapper" class="hidden">
+      <header class="app-header">
+        <div class="header-left">
+          <div class="header-logo">TT</div>
+          <div>
+            <h1>TINDERO TRADERS INTERNATIONAL</h1>
+            <span>Shop Management System</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="header-datetime" id="header-datetime"></div>
+          <div class="header-user">
+            <span class="icon">👤</span>
+            <span id="header-username">User</span>
+          </div>
+          <button id="btn-logout" class="icon-button" title="Logout">🚪</button>
+        </div>
+      </header>
+
+      <div class="app-body">
+        <aside class="sidebar">
+          <div class="sidebar-section">
+            <div class="sidebar-title">Main</div>
+            <button class="sidebar-item active" data-section="dashboard">
+              <span class="icon">📊</span> Dashboard
+            </button>
+            <button class="sidebar-item" data-section="workers">
+              <span class="icon">👷</span> Workers
+            </button>
+            <button class="sidebar-item" data-section="customers">
+              <span class="icon">🧑‍🤝‍🧑</span> Customers
+            </button>
+            <button class="sidebar-item" data-section="inventory">
+              <span class="icon">📦</span> Inventory
+            </button>
+            <button class="sidebar-item" data-section="sales">
+              <span class="icon">🧾</span> Sales & POS
+            </button>
+            <button class="sidebar-item" data-section="accounting">
+              <span class="icon">💰</span> Accounting
+            </button>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-title">System</div>
+            <button class="sidebar-item" data-section="settings">
+              <span class="icon">⚙️</span> Settings
+            </button>
+          </div>
+        </aside>
+
+        <main class="main-content">
+          <!-- GLOBAL SEARCH -->
+          <div class="top-toolbar">
+            <div class="search-wrapper">
+              <span class="icon">🔍</span>
+              <input type="text" id="global-search" placeholder="Search workers, customers, inventory, transactions..." />
+            </div>
+          </div>
+
+          <!-- DASHBOARD SECTION -->
+          <section id="section-dashboard" class="section visible">
+            <h2>Dashboard</h2>
+            <div class="cards-grid">
+              <div class="stat-card">
+                <div class="stat-icon">👷</div>
+                <div class="stat-info">
+                  <span class="stat-label">Workers</span>
+                  <span class="stat-value" id="stat-workers">0</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">🧑‍🤝‍🧑</div>
+                <div class="stat-info">
+                  <span class="stat-label">Customers</span>
+                  <span class="stat-value" id="stat-customers">0</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div class="stat-info">
+                  <span class="stat-label">Inventory Items</span>
+                  <span class="stat-value" id="stat-items">0</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-info">
+                  <span class="stat-label">Transactions</span>
+                  <span class="stat-value" id="stat-transactions">0</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- WORKERS SECTION -->
+          <section id="section-workers" class="section">
+            <div class="section-header">
+              <h2>Workers</h2>
+              <button id="btn-add-worker" class="primary-btn">
+                <span class="icon">➕</span> Add Worker
+              </button>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Worker ID</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="workers-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- CUSTOMERS SECTION -->
+          <section id="section-customers" class="section">
+            <div class="section-header">
+              <h2>Customers</h2>
+              <button id="btn-add-customer" class="primary-btn">
+                <span class="icon">➕</span> Add Customer
+              </button>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Customer ID</th>
+                    <th>Full Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="customers-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- INVENTORY SECTION -->
+          <section id="section-inventory" class="section">
+            <div class="section-header">
+              <h2>Inventory</h2>
+              <button id="btn-add-item" class="primary-btn">
+                <span class="icon">➕</span> Add Item
+              </button>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Item ID</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Qty</th>
+                    <th>Unit</th>
+                    <th>Selling Price</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="inventory-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- SALES & POS SECTION -->
+          <section id="section-sales" class="section">
+            <div class="section-header">
+              <h2>Sales & POS</h2>
+            </div>
+            <div class="pos-layout">
+              <div class="pos-left">
+                <div class="form-group">
+                  <label>Search Product (name, ID, barcode)</label>
+                  <input type="text" id="pos-search" />
+                </div>
+                <div class="table-wrapper small">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Item ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Add</th>
+                      </tr>
+                    </thead>
+                    <tbody id="pos-products-body"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="pos-right">
+                <h3>Cart</h3>
+                <div class="table-wrapper small">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Total</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody id="pos-cart-body"></tbody>
+                  </table>
+                </div>
+                <div class="pos-summary">
+                  <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="pos-subtotal">0.00</span>
+                  </div>
+                  <div class="summary-row">
+                    <span>Discount</span>
+                    <input type="number" id="pos-discount" value="0" />
+                  </div>
+                  <div class="summary-row">
+                    <span>Tax (%)</span>
+                    <input type="number" id="pos-tax" value="0" />
+                  </div>
+                  <div class="summary-row total">
+                    <span>Total</span>
+                    <span id="pos-total">0.00</span>
+                  </div>
+                  <div class="form-group">
+                    <label>Customer (optional)</label>
+                    <input type="text" id="pos-customer" />
+                  </div>
+                  <div class="form-group">
+                    <label>Payment Method</label>
+                    <select id="pos-payment-method">
+                      <option value="Cash">Cash</option>
+                      <option value="Card">Card</option>
+                      <option value="Transfer">Transfer</option>
+                    </select>
+                  </div>
+                  <button id="btn-complete-sale" class="primary-btn full-width">
+                    Complete Sale
+                  </button>
+                  <div id="pos-message" class="form-message"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ACCOUNTING SECTION -->
+          <section id="section-accounting" class="section">
+            <div class="section-header">
+              <h2>Payment & Accounting</h2>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Transaction ID</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Method</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="transactions-table-body"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <!-- SETTINGS SECTION -->
+          <section id="section-settings" class="section">
+            <h2>Settings</h2>
+            <div class="settings-layout">
+              <aside class="settings-sidebar">
+                <button class="settings-tab active" data-settings="appearance">
+                  <span class="icon">🎨</span> Theme & Appearance
+                </button>
+                <button class="settings-tab" data-settings="account">
+                  <span class="icon">👤</span> Account Information
+                </button>
+                <button class="settings-tab" data-settings="security">
+                  <span class="icon">🔐</span> Password & Security
+                </button>
+                <button class="settings-tab" data-settings="preferences">
+                  <span class="icon">⚙️</span> System Preferences
+                </button>
+                <button class="settings-tab" data-settings="notifications">
+                  <span class="icon">🔔</span> Notifications
+                </button>
+                <button class="settings-tab" data-settings="privacy">
+                  <span class="icon">🛡️</span> Security & Privacy
+                </button>
+              </aside>
+
+              <div class="settings-content">
+                <!-- Appearance -->
+                <div class="settings-panel visible" id="settings-appearance">
+                  <h3>Theme & Appearance</h3>
+                  <div class="form-group">
+                    <label>Theme Mode</label>
+                    <select id="theme-mode">
+                      <option value="dark">Dark</option>
+                      <option value="light">Light</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Primary Accent Color</label>
+                    <input type="color" id="theme-accent" value="#22c55e" />
+                  </div>
+                  <div class="form-group">
+                    <label>Font Size</label>
+                    <select id="theme-font-size">
+                      <option value="small">Small</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="large">Large</option>
+                    </select>
+                  </div>
+                  <button id="btn-save-theme" class="primary-btn">Save Theme</button>
+                  <div id="theme-message" class="form-message"></div>
+                </div>
+
+                <!-- Account -->
+                <div class="settings-panel" id="settings-account">
+                  <h3>Account Information</h3>
+                  <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="account-fullname" />
+                  </div>
+                  <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="account-username" />
+                  </div>
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="account-email" />
+                  </div>
+                  <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" id="account-phone" />
+                  </div>
+                  <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="account-address" placeholder="Street, City, Country" />
+                  </div>
+                  <button id="btn-save-account" class="primary-btn">Save Changes</button>
+                  <div id="account-message" class="form-message"></div>
+                </div>
+
+                <!-- Security -->
+                <div class="settings-panel" id="settings-security">
+                  <h3>Password & Security</h3>
+                  <div class="form-group">
+                    <label>Current Password</label>
+                    <input type="password" id="security-current-password" />
+                  </div>
+                  <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" id="security-new-password" />
+                  </div>
+                  <div class="form-group">
+                    <label>Confirm New Password</label>
+                    <input type="password" id="security-confirm-password" />
+                  </div>
+                  <button id="btn-change-password" class="primary-btn">Change Password</button>
+                  <div class="divider"></div>
+                  <h4>Forgotten Password Reset</h4>
+                  <p>You can also use the OTP reset flow from here.</p>
+                  <button id="btn-open-forgot-from-settings" class="secondary-btn">
+                    Reset via OTP
+                  </button>
+                  <div id="security-message" class="form-message"></div>
+                </div>
+
+                <!-- Preferences -->
+                <div class="settings-panel" id="settings-preferences">
+                  <h3>System Preferences</h3>
+                  <div class="form-group">
+                    <label>Language</label>
+                    <select id="pref-language">
+                      <option value="en">English</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Time Zone</label>
+                    <select id="pref-timezone">
+                      <option value="local">Use Browser Time</option>
+                    </select>
+                  </div>
+                  <button id="btn-save-preferences" class="primary-btn">Save Preferences</button>
+                  <div id="preferences-message" class="form-message"></div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="settings-panel" id="settings-notifications">
+                  <h3>Notifications</h3>
+                  <div class="form-group">
+                    <label>Enable Notifications</label>
+                    <select id="notif-enabled">
+                      <option value="on">On</option>
+                      <option value="off">Off</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Notification Type</label>
+                    <select id="notif-type">
+                      <option value="email">Email</option>
+                      <option value="sms">SMS</option>
+                      <option value="in-app">In-App</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Alert Categories</label>
+                    <div class="checkbox-group">
+                      <label><input type="checkbox" id="notif-sales" checked /> Sales</label>
+                      <label><input type="checkbox" id="notif-inventory" checked /> Inventory</label>
+                      <label><input type="checkbox" id="notif-security" checked /> Security</label>
+                      <label><input type="checkbox" id="notif-updates" checked /> Updates</label>
+                    </div>
+                  </div>
+                  <button id="btn-save-notifications" class="primary-btn">Save Notification Settings</button>
+                  <div id="notifications-message" class="form-message"></div>
+                </div>
+
+                <!-- Privacy -->
+                <div class="settings-panel" id="settings-privacy">
+                  <h3>Security & Privacy</h3>
+                  <p>View login activity, manage sessions, and control privacy.</p>
+                  <button id="btn-logout-all" class="secondary-btn">Log out from all devices</button>
+                  <div class="form-group">
+                    <label>Two-Factor Authentication (2FA)</label>
+                    <select id="privacy-2fa">
+                      <option value="off">Off</option>
+                      <option value="on">On (simulated)</option>
+                    </select>
+                  </div>
+                  <div id="privacy-message" class="form-message"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <!-- MODAL OVERLAY FOR ADD/EDIT -->
+    <div id="modal-overlay" class="modal hidden">
+      <div class="modal-content large">
+        <div class="modal-header">
+          <h2 id="modal-title">Modal</h2>
+          <button class="icon-button" id="modal-close">✖</button>
+        </div>
+        <div class="modal-body" id="modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    // ===== SIMPLE LOCAL "DATABASE" USING localStorage =====
+    const STORAGE_KEY = 'tindero_data_v1';
+    const AUTH_KEY = 'tindero_auth_v1';
+    const THEME_KEY = 'tindero_theme_v1';
+
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        return {
+          users: [],
+          workers: [],
+          customers: [],
+          inventory: [],
+          transactions: [],
+          otps: []
+        };
+      }
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return {
+          users: [],
+          workers: [],
+          customers: [],
+          inventory: [],
+          transactions: [],
+          otps: []
+        };
+      }
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function loadAuth() {
+      const raw = localStorage.getItem(AUTH_KEY);
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return null;
+      }
+    }
+
+    function saveAuth(auth) {
+      localStorage.setItem(AUTH_KEY, JSON.stringify(auth));
+    }
+
+    function clearAuth() {
+      localStorage.removeItem(AUTH_KEY);
+    }
+
+    function loadTheme() {
+      const raw = localStorage.getItem(THEME_KEY);
+      if (!raw) return null;
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return null;
+      }
+    }
+
+    function saveTheme(theme) {
+      localStorage.setItem(THEME_KEY, JSON.stringify(theme));
+    }
+
+    // ===== DOM HELPERS =====
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    const showElement = (el) => el.classList.remove('hidden');
+    const hideElement = (el) => el.classList.add('hidden');
+
+    const showSection = (id) => {
+      $$('.section').forEach(s => s.classList.remove('visible'));
+      $('#section-' + id).classList.add('visible');
+      $$('.sidebar-item').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.section === id);
+      });
+    };
+
+    const showSettingsPanel = (id) => {
+      $$('.settings-panel').forEach(p => p.classList.remove('visible'));
+      $('#settings-' + id).classList.add('visible');
+      $$('.settings-tab').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.settings === id);
+      });
+    };
+
+    const setMessage = (el, msg, type = 'info') => {
+      el.textContent = msg || '';
+      el.className = 'form-message ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : '');
+    };
+
+    // ===== GLOBAL STATE =====
+    let currentUser = null;
+    let globalSearchTerm = '';
+    let cart = [];
+
+    // ===== AUTH UI =====
+    function showAuth() {
+      showElement($('#auth-wrapper'));
+      hideElement($('#app-wrapper'));
+    }
+
+    function showApp() {
+      hideElement($('#auth-wrapper'));
+      showElement($('#app-wrapper'));
+    }
+
+    function updateHeaderUser() {
+      if (!currentUser) return;
+      $('#header-username').textContent = currentUser.username || currentUser.fullName || 'User';
+    }
+
+    function initAuthUI() {
+      const btnShowLogin = $('#btn-show-login');
+      const btnShowSignup = $('#btn-show-signup');
+      const loginForm = $('#login-form');
+      const signupForm = $('#signup-form');
+      const loginMsg = $('#login-message');
+      const signupMsg = $('#signup-message');
+
+      btnShowLogin.addEventListener('click', () => {
+        btnShowLogin.classList.add('active');
+        btnShowSignup.classList.remove('active');
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+        setMessage(loginMsg, '');
+        setMessage(signupMsg, '');
+      });
+
+      btnShowSignup.addEventListener('click', () => {
+        btnShowSignup.classList.add('active');
+        btnShowLogin.classList.remove('active');
+        signupForm.classList.remove('hidden');
+        loginForm.classList.add('hidden');
+        setMessage(loginMsg, '');
+        setMessage(signupMsg, '');
+      });
+
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        setMessage(loginMsg, '');
+        const identifier = $('#login-identifier').value.trim();
+        const password = $('#login-password').value.trim();
+        if (!identifier || !password) {
+          setMessage(loginMsg, 'Please enter username/email and password.', 'error');
+          return;
+        }
+        const data = loadData();
+        const user = data.users.find(
+          u => (u.username === identifier || u.email === identifier) && u.password === password
+        );
+        if (!user) {
+          setMessage(loginMsg, 'Invalid credentials or account does not exist.', 'error');
+          return;
+        }
+        currentUser = user;
+        saveAuth({ username: user.username });
+        updateHeaderUser();
+        showApp();
+        loadAllData();
+      });
+
+      signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        setMessage(signupMsg, '');
+        const fullName = $('#signup-fullname').value.trim();
+        const username = $('#signup-username').value.trim();
+        const email = $('#signup-email').value.trim();
+        const phoneNumber = $('#signup-phone').value.trim();
+        const idNumber = $('#signup-idnumber').value.trim();
+        const password = $('#signup-password').value;
+        const confirmPassword = $('#signup-confirm-password').value;
+
+        if (!/^[0-9]+$/.test(phoneNumber)) {
+          setMessage(signupMsg, 'Phone number must contain only digits.', 'error');
+          return;
+        }
+        if (idNumber && !/^[0-9]+$/.test(idNumber)) {
+          setMessage(signupMsg, 'ID number must contain only digits.', 'error');
+          return;
+        }
+        if (password !== confirmPassword) {
+          setMessage(signupMsg, 'Passwords do not match.', 'error');
+          return;
+        }
+
+        const data = loadData();
+        if (data.users.some(u => u.username === username)) {
+          setMessage(signupMsg, 'Username already exists.', 'error');
+          return;
+        }
+        if (data.users.some(u => u.email === email)) {
+          setMessage(signupMsg, 'Email already exists.', 'error');
+          return;
+        }
+
+        const newUser = {
+          id: 'U' + Date.now(),
+          fullName,
+          username,
+          email,
+          phoneNumber,
+          idNumber,
+          password
+        };
+        data.users.push(newUser);
+        saveData(data);
+        currentUser = newUser;
+        saveAuth({ username: newUser.username });
+        updateHeaderUser();
+        showApp();
+        loadAllData();
+      });
+
+      // Forgot password modal
+      $('#btn-forgot-password').addEventListener('click', () => {
+        showElement($('#forgot-modal'));
+      });
+      $('#close-forgot-modal').addEventListener('click', () => {
+        hideElement($('#forgot-modal'));
+        setMessage($('#forgot-message'), '');
+      });
+
+      $('#btn-send-otp').addEventListener('click', () => {
+        const identifier = $('#forgot-identifier').value.trim();
+        if (!identifier) {
+          setMessage($('#forgot-message'), 'Please enter identifier.', 'error');
+          return;
+        }
+        const data = loadData();
+        const user = data.users.find(
+          u => u.username === identifier || u.email === identifier || u.phoneNumber === identifier
+        );
+        if (!user) {
+          setMessage($('#forgot-message'), 'No user found for that identifier.', 'error');
+          return;
+        }
+        const otp = String(Math.floor(100000 + Math.random() * 900000));
+        data.otps = data.otps.filter(o => o.userId !== user.id);
+        data.otps.push({
+          userId: user.id,
+          otp,
+          createdAt: Date.now()
+        });
+        saveData(data);
+        console.log('OTP (simulated send):', otp);
+        setMessage($('#forgot-message'), 'OTP generated and "sent" (check console).', 'success');
+      });
+
+      $('#btn-reset-password').addEventListener('click', () => {
+        const identifier = $('#reset-identifier').value.trim();
+        const otp = $('#reset-otp').value.trim();
+        const newPassword = $('#reset-new-password').value;
+        if (!identifier || !otp || !newPassword) {
+          setMessage($('#forgot-message'), 'Please fill all reset fields.', 'error');
+          return;
+        }
+        const data = loadData();
+        const user = data.users.find(
+          u => u.username === identifier || u.email === identifier || u.phoneNumber === identifier
+        );
+        if (!user) {
+          setMessage($('#forgot-message'), 'No user found for that identifier.', 'error');
+          return;
+        }
+        const otpRecord = data.otps.find(o => o.userId === user.id && o.otp === otp);
+        if (!otpRecord) {
+          setMessage($('#forgot-message'), 'Invalid OTP.', 'error');
+          return;
+        }
+        user.password = newPassword;
+        data.otps = data.otps.filter(o => o !== otpRecord);
+        saveData(data);
+        setMessage($('#forgot-message'), 'Password reset successful.', 'success');
+      });
+    }
+
+    // ===== LOGOUT =====
+    function initLogout() {
+      $('#btn-logout').addEventListener('click', () => {
+        currentUser = null;
+        clearAuth();
+        showAuth();
+      });
+      $('#btn-logout-all').addEventListener('click', () => {
+        currentUser = null;
+        clearAuth();
+        showAuth();
+      });
+    }
+
+    // ===== SIDEBAR NAV =====
+    function initSidebarNav() {
+      $$('.sidebar-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+          showSection(btn.dataset.section);
+        });
+      });
+    }
+
+    // ===== SETTINGS NAV =====
+    function initSettingsNav() {
+      $$('.settings-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          showSettingsPanel(btn.dataset.settings);
+        });
+      });
+
+      $('#btn-open-forgot-from-settings').addEventListener('click', () => {
+        showElement($('#forgot-modal'));
+      });
+    }
+
+    // ===== THEME =====
+    function applyThemeFromStorage() {
+      const t = loadTheme();
+      if (!t) return;
+      document.documentElement.setAttribute('data-theme-mode', t.mode || 'dark');
+      document.documentElement.style.setProperty('--accent-color', t.accent || '#22c55e');
+      document.documentElement.setAttribute('data-font-size', t.fontSize || 'medium');
+      $('#theme-mode').value = t.mode || 'dark';
+      $('#theme-accent').value = t.accent || '#22c55e';
+      $('#theme-font-size').value = t.fontSize || 'medium';
+    }
+
+    function initThemeSettings() {
+      applyThemeFromStorage();
+      $('#btn-save-theme').addEventListener('click', () => {
+        const mode = $('#theme-mode').value;
+        const accent = $('#theme-accent').value;
+        const fontSize = $('#theme-font-size').value;
+        document.documentElement.setAttribute('data-theme-mode', mode);
+        document.documentElement.style.setProperty('--accent-color', accent);
+        document.documentElement.setAttribute('data-font-size', fontSize);
+        saveTheme({ mode, accent, fontSize });
+        setMessage($('#theme-message'), 'Theme saved.', 'success');
+      });
+    }
+
+    // ===== DATE/TIME =====
+    function initDateTime() {
+      const el = $('#header-datetime');
+      const update = () => {
+        const now = new Date();
+        el.textContent = now.toLocaleString();
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    // ===== GLOBAL SEARCH =====
+    function initGlobalSearch() {
+      $('#global-search').addEventListener('input', (e) => {
+        globalSearchTerm = e.target.value.trim().toLowerCase();
+        loadAllData();
+      });
+    }
+
+    // ===== DATA LOADERS (LOCAL) =====
+    function filterBySearch(list, fields) {
+      if (!globalSearchTerm) return list;
+      return list.filter(item =>
+        fields.some(f => String(item[f] || '').toLowerCase().includes(globalSearchTerm))
+      );
+    }
+
+    function loadWorkers() {
+      const data = loadData();
+      const workers = filterBySearch(data.workers, ['workerId', 'fullName', 'phoneNumber', 'role', 'department']);
+      const tbody = $('#workers-table-body');
+      tbody.innerHTML = '';
+      workers.forEach(w => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${w.workerId}</td>
+          <td>${w.fullName}</td>
+          <td>${w.phoneNumber}</td>
+          <td>${w.role}</td>
+          <td>${w.department}</td>
+          <td>${w.status}</td>
+          <td>
+            <button class="table-btn edit" data-id="${w.id}" data-type="worker">✏️</button>
+            <button class="table-btn delete" data-id="${w.id}" data-type="worker">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      $('#stat-workers').textContent = workers.length;
+    }
+
+    function loadCustomers() {
+      const data = loadData();
+      const customers = filterBySearch(data.customers, ['customerId', 'fullName', 'phoneNumber', 'email', 'customerType']);
+      const tbody = $('#customers-table-body');
+      tbody.innerHTML = '';
+      customers.forEach(c => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${c.customerId}</td>
+          <td>${c.fullName}</td>
+          <td>${c.phoneNumber}</td>
+          <td>${c.email || ''}</td>
+          <td>${c.customerType}</td>
+          <td>
+            <button class="table-btn edit" data-id="${c.id}" data-type="customer">✏️</button>
+            <button class="table-btn delete" data-id="${c.id}" data-type="customer">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      $('#stat-customers').textContent = customers.length;
+    }
+
+    function loadInventory() {
+      const data = loadData();
+      const items = filterBySearch(data.inventory, ['itemId', 'itemName', 'category', 'barcode']);
+      const tbody = $('#inventory-table-body');
+      const posProducts = $('#pos-products-body');
+      tbody.innerHTML = '';
+      posProducts.innerHTML = '';
+      items.forEach(i => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${i.itemId}</td>
+          <td>${i.itemName}</td>
+          <td>${i.category}</td>
+          <td>${i.quantity}</td>
+          <td>${i.unit}</td>
+          <td>${Number(i.sellingPrice).toFixed(2)}</td>
+          <td>
+            <button class="table-btn edit" data-id="${i.id}" data-type="item">✏️</button>
+            <button class="table-btn delete" data-id="${i.id}" data-type="item">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+
+        const tr2 = document.createElement('tr');
+        tr2.innerHTML = `
+          <td>${i.itemId}</td>
+          <td>${i.itemName}</td>
+          <td>${Number(i.sellingPrice).toFixed(2)}</td>
+          <td><button class="table-btn add-to-cart" data-id="${i.id}" data-itemid="${i.itemId}" data-name="${i.itemName}" data-price="${i.sellingPrice}">➕</button></td>
+        `;
+        posProducts.appendChild(tr2);
+      });
+      $('#stat-items').textContent = items.length;
+    }
+
+    function loadTransactions() {
+      const data = loadData();
+      const txs = filterBySearch(data.transactions, ['transactionId', 'paymentType', 'category', 'paymentMethod', 'status']);
+      const tbody = $('#transactions-table-body');
+      tbody.innerHTML = '';
+      txs.forEach(t => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${t.transactionId}</td>
+          <td>${t.paymentType}</td>
+          <td>${t.category || ''}</td>
+          <td>${Number(t.amount).toFixed(2)}</td>
+          <td>${t.paymentMethod || ''}</td>
+          <td>${t.status || ''}</td>
+          <td>${new Date(t.dateTime).toLocaleString()}</td>
+          <td>
+            <button class="table-btn edit" data-id="${t.id}" data-type="transaction">✏️</button>
+            <button class="table-btn delete" data-id="${t.id}" data-type="transaction">🗑️</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      $('#stat-transactions').textContent = txs.length;
+    }
+
+    function loadAllData() {
+      loadWorkers();
+      loadCustomers();
+      loadInventory();
+      loadTransactions();
+      loadAccountSettingsFromUser();
+    }
+
+    // ===== MODAL =====
+    const modalOverlay = $('#modal-overlay');
+    const modalTitle = $('#modal-title');
+    const modalBody = $('#modal-body');
+
+    $('#modal-close').addEventListener('click', () => {
+      hideElement(modalOverlay);
+      modalBody.innerHTML = '';
+    });
+
+    function openModal(title, contentHtml, onSubmit) {
+      modalTitle.textContent = title;
+      modalBody.innerHTML = contentHtml;
+      showElement(modalOverlay);
+
+      const form = modalBody.querySelector('form');
+      if (form && onSubmit) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          onSubmit(new FormData(form));
+        });
+      }
+    }
+
+    // ===== ADD BUTTONS =====
+    function initAddButtons() {
+      $('#btn-add-worker').addEventListener('click', () => {
+        openModal('Add Worker', `
+          <form class="modal-form">
+            <div class="form-group"><label>Full Name</label><input name="fullName" required /></div>
+            <div class="form-group"><label>Worker ID (optional)</label><input name="workerId" /></div>
+            <div class="form-group"><label>Phone Number</label><input name="phoneNumber" required /></div>
+            <div class="form-group"><label>Email</label><input name="email" type="email" /></div>
+            <div class="form-group"><label>Role / Position</label><input name="role" required /></div>
+            <div class="form-group"><label>Department</label><input name="department" required /></div>
+            <div class="form-group"><label>Shift Timing</label><input name="shiftTiming" required /></div>
+            <div class="form-group"><label>Working Hours</label><input name="workingHours" type="number" min="0" /></div>
+            <div class="form-group"><label>Overtime Hours</label><input name="overtimeHours" type="number" min="0" /></div>
+            <div class="form-group"><label>Salary</label><input name="salary" type="number" min="0" /></div>
+            <div class="form-group"><label>Status</label>
+              <select name="status">
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+            <button type="submit" class="primary-btn full-width">Save Worker</button>
+            <div class="form-message" id="modal-message"></div>
+          </form>
+        `, (fd) => {
+          const msgEl = $('#modal-message');
+          const phone = fd.get('phoneNumber').trim();
+          if (!/^[0-9]+$/.test(phone)) {
+            setMessage(msgEl, 'Phone number must be numeric.', 'error');
+            return;
+          }
+          const data = loadData();
+          const workerId = fd.get('workerId').trim() || ('W' + Date.now());
+          if (data.workers.some(w => w.workerId === workerId)) {
+            setMessage(msgEl, 'Worker ID already exists.', 'error');
+            return;
+          }
+          const newWorker = {
+            id: 'W' + Date.now(),
+            workerId,
+            fullName: fd.get('fullName').trim(),
+            phoneNumber: phone,
+            email: fd.get('email').trim(),
+            role: fd.get('role').trim(),
+            department: fd.get('department').trim(),
+            shiftTiming: fd.get('shiftTiming').trim(),
+            workingHours: Number(fd.get('workingHours') || 0),
+            overtimeHours: Number(fd.get('overtimeHours') || 0),
+            salary: Number(fd.get('salary') || 0),
+            status: fd.get('status') || 'Active'
+          };
+          data.workers.push(newWorker);
+          saveData(data);
+          loadWorkers();
+          hideElement(modalOverlay);
+        });
+      });
+
+      $('#btn-add-customer').addEventListener('click', () => {
+        openModal('Add Customer', `
+          <form class="modal-form">
+            <div class="form-group"><label>Full Name</label><input name="fullName" required /></div>
+            <div class="form-group"><label>Customer ID (optional)</label><input name="customerId" /></div>
+            <div class="form-group"><label>Phone Number</label><input name="phoneNumber" required /></div>
+            <div class="form-group"><label>Email</label><input name="email" type="email" /></div>
+            <div class="form-group"><label>Address Street</label><input name="addressStreet" /></div>
+            <div class="form-group"><label>Address City</label><input name="addressCity" /></div>
+            <div class="form-group"><label>Address Country</label><input name="addressCountry" /></div>
+            <div class="form-group"><label>Date of Birth</label><input name="dateOfBirth" type="date" /></div>
+            <div class="form-group"><label>Gender</label>
+              <select name="gender">
+                <option value="">Not specified</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Customer Type</label>
+              <select name="customerType">
+                <option value="Regular">Regular</option>
+                <option value="VIP">VIP</option>
+                <option value="Wholesale">Wholesale</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Company Name</label><input name="companyName" /></div>
+            <div class="form-group"><label>Notes</label><textarea name="notes"></textarea></div>
+            <button type="submit" class="primary-btn full-width">Save Customer</button>
+            <div class="form-message" id="modal-message"></div>
+          </form>
+        `, (fd) => {
+          const msgEl = $('#modal-message');
+          const phone = fd.get('phoneNumber').trim();
+          if (!/^[0-9]+$/.test(phone)) {
+            setMessage(msgEl, 'Phone number must be numeric.', 'error');
+            return;
+          }
+          const data = loadData();
+          const customerId = fd.get('customerId').trim() || ('C' + Date.now());
+          if (data.customers.some(c => c.customerId === customerId)) {
+            setMessage(msgEl, 'Customer ID already exists.', 'error');
+            return;
+          }
+          const newCustomer = {
+            id: 'C' + Date.now(),
+            customerId,
+            fullName: fd.get('fullName').trim(),
+            phoneNumber: phone,
+            email: fd.get('email').trim(),
+            addressStreet: fd.get('addressStreet').trim(),
+            addressCity: fd.get('addressCity').trim(),
+            addressCountry: fd.get('addressCountry').trim(),
+            dateOfBirth: fd.get('dateOfBirth'),
+            gender: fd.get('gender'),
+            customerType: fd.get('customerType') || 'Regular',
+            companyName: fd.get('companyName').trim(),
+            notes: fd.get('notes').trim()
+          };
+          data.customers.push(newCustomer);
+          saveData(data);
+          loadCustomers();
+          hideElement(modalOverlay);
+        });
+      });
+
+      $('#btn-add-item').addEventListener('click', () => {
+        openModal('Add Inventory Item', `
+          <form class="modal-form">
+            <div class="form-group"><label>Item Name</label><input name="itemName" required /></div>
+            <div class="form-group"><label>Item ID (optional)</label><input name="itemId" /></div>
+            <div class="form-group"><label>Category</label><input name="category" required /></div>
+            <div class="form-group"><label>Quantity</label><input name="quantity" type="number" min="0" value="0" /></div>
+            <div class="form-group"><label>Unit</label><input name="unit" required /></div>
+            <div class="form-group"><label>Cost Price</label><input name="costPrice" type="number" min="0" required /></div>
+            <div class="form-group"><label>Selling Price</label><input name="sellingPrice" type="number" min="0" required /></div>
+            <div class="form-group"><label>Supplier</label><input name="supplier" /></div>
+            <div class="form-group"><label>Date Added</label><input name="dateAdded" type="date" /></div>
+            <div class="form-group"><label>Expiry Date</label><input name="expiryDate" type="date" /></div>
+            <div class="form-group"><label>Storage Location</label><input name="storageLocation" /></div>
+            <div class="form-group"><label>Minimum Stock Level</label><input name="minimumStockLevel" type="number" min="0" value="0" /></div>
+            <div class="form-group"><label>Description</label><textarea name="description"></textarea></div>
+            <div class="form-group"><label>Barcode</label><input name="barcode" /></div>
+            <button type="submit" class="primary-btn full-width">Save Item</button>
+            <div class="form-message" id="modal-message"></div>
+          </form>
+        `, (fd) => {
+          const msgEl = $('#modal-message');
+          const data = loadData();
+          const itemId = fd.get('itemId').trim() || ('I' + Date.now());
+          if (data.inventory.some(i => i.itemId === itemId)) {
+            setMessage(msgEl, 'Item ID already exists.', 'error');
+            return;
+          }
+          const newItem = {
+            id: 'I' + Date.now(),
+            itemId,
+            itemName: fd.get('itemName').trim(),
+            category: fd.get('category').trim(),
+            quantity: Number(fd.get('quantity') || 0),
+            unit: fd.get('unit').trim(),
+            costPrice: Number(fd.get('costPrice') || 0),
+            sellingPrice: Number(fd.get('sellingPrice') || 0),
+            supplier: fd.get('supplier').trim(),
+            dateAdded: fd.get('dateAdded'),
+            expiryDate: fd.get('expiryDate'),
+            storageLocation: fd.get('storageLocation').trim(),
+            minimumStockLevel: Number(fd.get('minimumStockLevel') || 0),
+            description: fd.get('description').trim(),
+            barcode: fd.get('barcode').trim()
+          };
+          data.inventory.push(newItem);
+          saveData(data);
+          loadInventory();
+          hideElement(modalOverlay);
+        });
+      });
+    }
+
+    // ===== EDIT / DELETE =====
+    function initTableActions() {
+      document.body.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+
+        const type = btn.dataset.type;
+        const id = btn.dataset.id;
+
+        // DELETE
+        if (btn.classList.contains('delete') && type && id && !btn.dataset.cartIndex) {
+          if (!confirm('Are you sure you want to delete this record?')) return;
+          const data = loadData();
+          if (type === 'worker') data.workers = data.workers.filter(w => w.id !== id);
+          if (type === 'customer') data.customers = data.customers.filter(c => c.id !== id);
+          if (type === 'item') data.inventory = data.inventory.filter(i => i.id !== id);
+          if (type === 'transaction') data.transactions = data.transactions.filter(t => t.id !== id);
+          saveData(data);
+          loadAllData();
+        }
+
+        // EDIT
+        if (btn.classList.contains('edit') && type && id) {
+          const data = loadData();
+          if (type === 'worker') {
+            const worker = data.workers.find(w => w.id === id);
+            if (!worker) return;
+            openModal('Edit Worker', `
+              <form class="modal-form">
+                <div class="form-group"><label>Full Name</label><input name="fullName" value="${worker.fullName}" required /></div>
+                <div class="form-group"><label>Phone Number</label><input name="phoneNumber" value="${worker.phoneNumber}" required /></div>
+                <div class="form-group"><label>Role / Position</label><input name="role" value="${worker.role}" required /></div>
+                <div class="form-group"><label>Department</label><input name="department" value="${worker.department}" required /></div>
+                <div class="form-group"><label>Status</label>
+                  <select name="status">
+                    <option value="Active" ${worker.status === 'Active' ? 'selected' : ''}>Active</option>
+                    <option value="Inactive" ${worker.status === 'Inactive' ? 'selected' : ''}>Inactive</option>
+                  </select>
+                </div>
+                <button type="submit" class="primary-btn full-width">Update</button>
+                <div class="form-message" id="modal-message"></div>
+              </form>
+            `, (fd) => {
+              const msgEl = $('#modal-message');
+              const phone = fd.get('phoneNumber').trim();
+              if (!/^[0-9]+$/.test(phone)) {
+                setMessage(msgEl, 'Phone number must be numeric.', 'error');
+                return;
+              }
+              worker.fullName = fd.get('fullName').trim();
+              worker.phoneNumber = phone;
+              worker.role = fd.get('role').trim();
+              worker.department = fd.get('department').trim();
+              worker.status = fd.get('status');
+              saveData(data);
+              loadWorkers();
+              hideElement(modalOverlay);
+            });
+          }
+
+          if (type === 'customer') {
+            const customer = data.customers.find(c => c.id === id);
+            if (!customer) return;
+            openModal('Edit Customer', `
+              <form class="modal-form">
+                <div class="form-group"><label>Full Name</label><input name="fullName" value="${customer.fullName}" required /></div>
+                <div class="form-group"><label>Phone Number</label><input name="phoneNumber" value="${customer.phoneNumber}" required /></div>
+                <div class="form-group"><label>Email</label><input name="email" type="email" value="${customer.email || ''}" /></div>
+                <div class="form-group"><label>Customer Type</label>
+                  <select name="customerType">
+                    <option value="Regular" ${customer.customerType === 'Regular' ? 'selected' : ''}>Regular</option>
+                    <option value="VIP" ${customer.customerType === 'VIP' ? 'selected' : ''}>VIP</option>
+                    <option value="Wholesale" ${customer.customerType === 'Wholesale' ? 'selected' : ''}>Wholesale</option>
+                  </select>
+                </div>
+                <button type="submit" class="primary-btn full-width">Update</button>
+                <div class="form-message" id="modal-message"></div>
+              </form>
+            `, (fd) => {
+              const msgEl = $('#modal-message');
+              const phone = fd.get('phoneNumber').trim();
+              if (!/^[0-9]+$/.test(phone)) {
+                setMessage(msgEl, 'Phone number must be numeric.', 'error');
+                return;
+              }
+              customer.fullName = fd.get('fullName').trim();
+              customer.phoneNumber = phone;
+              customer.email = fd.get('email').trim();
+              customer.customerType = fd.get('customerType');
+              saveData(data);
+              loadCustomers();
+              hideElement(modalOverlay);
+            });
+          }
+
+          if (type === 'item') {
+            const item = data.inventory.find(i => i.id === id);
+            if (!item) return;
+            openModal('Edit Inventory Item', `
+              <form class="modal-form">
+                <div class="form-group"><label>Item Name</label><input name="itemName" value="${item.itemName}" required /></div>
+                <div class="form-group"><label>Quantity</label><input name="quantity" type="number" min="0" value="${item.quantity}" required /></div>
+                <div class="form-group"><label>Selling Price</label><input name="sellingPrice" type="number" min="0" value="${item.sellingPrice}" required /></div>
+                <button type="submit" class="primary-btn full-width">Update</button>
+                <div class="form-message" id="modal-message"></div>
+              </form>
+            `, (fd) => {
+              item.itemName = fd.get('itemName').trim();
+              item.quantity = Number(fd.get('quantity') || 0);
+              item.sellingPrice = Number(fd.get('sellingPrice') || 0);
+              saveData(data);
+              loadInventory();
+              hideElement(modalOverlay);
+            });
+          }
+
+          if (type === 'transaction') {
+            const tx = data.transactions.find(t => t.id === id);
+            if (!tx) return;
+            openModal('Edit Transaction Status', `
+              <form class="modal-form">
+                <div class="form-group"><label>Status</label><input name="status" value="${tx.status || ''}" /></div>
+                <button type="submit" class="primary-btn full-width">Update</button>
+                <div class="form-message" id="modal-message"></div>
+              </form>
+            `, (fd) => {
+              tx.status = fd.get('status').trim();
+              saveData(data);
+              loadTransactions();
+              hideElement(modalOverlay);
+            });
+          }
+        }
+      });
+    }
+
+    // ===== POS CART =====
+    function recalcCart() {
+      const tbody = $('#pos-cart-body');
+      tbody.innerHTML = '';
+      let subtotal = 0;
+      cart.forEach((item, idx) => {
+        const total = item.quantity * item.price;
+        subtotal += total;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.name}</td>
+          <td><input type="number" min="1" value="${item.quantity}" data-cart-index="${idx}" class="cart-qty" /></td>
+          <td>${item.price.toFixed(2)}</td>
+          <td>${total.toFixed(2)}</td>
+          <td><button class="table-btn delete" data-cart-index="${idx}">🗑️</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+      $('#pos-subtotal').textContent = subtotal.toFixed(2);
+      const discount = Number($('#pos-discount').value) || 0;
+      const tax = Number($('#pos-tax').value) || 0;
+      const taxed = subtotal - discount + (subtotal * tax / 100);
+      $('#pos-total').textContent = taxed.toFixed(2);
+    }
+
+    function initPOS() {
+      document.body.addEventListener('click', (e) => {
+        const btn = e.target.closest('button');
+        if (!btn) return;
+
+        if (btn.classList.contains('add-to-cart')) {
+          const id = btn.dataset.id;
+          const itemId = btn.dataset.itemid;
+          const name = btn.dataset.name;
+          const price = Number(btn.dataset.price);
+          const existing = cart.find(c => c.itemId === itemId);
+          if (existing) {
+            existing.quantity += 1;
+          } else {
+            cart.push({ id, itemId, name, price, quantity: 1 });
+          }
+          recalcCart();
+        }
+
+        if (btn.classList.contains('delete') && btn.dataset.cartIndex !== undefined) {
+          const idx = Number(btn.dataset.cartIndex);
+          cart.splice(idx, 1);
+          recalcCart();
+        }
+      });
+
+      document.body.addEventListener('input', (e) => {
+        if (e.target.classList.contains('cart-qty')) {
+          const idx = Number(e.target.dataset.cartIndex);
+          const val = Number(e.target.value) || 1;
+          cart[idx].quantity = val;
+          recalcCart();
+        }
+        if (e.target.id === 'pos-discount' || e.target.id === 'pos-tax') {
+          recalcCart();
+        }
+      });
+
+      $('#btn-complete-sale').addEventListener('click', () => {
+        const msgEl = $('#pos-message');
+        setMessage(msgEl, '');
+        if (cart.length === 0) {
+          setMessage(msgEl, 'Cart is empty.', 'error');
+          return;
+        }
+        const subtotal = Number($('#pos-subtotal').textContent) || 0;
+        const discount = Number($('#pos-discount').value) || 0;
+        const tax = Number($('#pos-tax').value) || 0;
+        const total = Number($('#pos-total').textContent) || 0;
+        const customerOrSupplier = $('#pos-customer').value.trim();
+        const paymentMethod = $('#pos-payment-method').value;
+
+        const data = loadData();
+        const items = cart.map(c => ({
+          itemId: c.itemId,
+          itemName: c.name,
+          quantity: c.quantity,
+          unitPrice: c.price
+        }));
+
+        // Deduct inventory
+        items.forEach(ci => {
+          const invItem = data.inventory.find(i => i.itemId === ci.itemId);
+          if (invItem) {
+            invItem.quantity = Math.max(0, Number(invItem.quantity || 0) - ci.quantity);
+          }
+        });
+
+        const newTx = {
+          id: 'T' + Date.now(),
+          transactionId: 'T' + Date.now(),
+          paymentType: 'Income',
+          category: 'Sales',
+          amount: total,
+          paymentMethod,
+          status: 'Completed',
+          customerOrSupplier,
+          items,
+          dateTime: Date.now()
+        };
+        data.transactions.push(newTx);
+        saveData(data);
+
+        cart = [];
+        recalcCart();
+        loadInventory();
+        loadTransactions();
+        setMessage(msgEl, 'Sale completed and inventory updated.', 'success');
+      });
+    }
+
+    // ===== SIMPLE SETTINGS =====
+    function initSimpleSettings() {
+      $('#btn-save-preferences').addEventListener('click', () => {
+        setMessage($('#preferences-message'), 'Preferences saved locally.', 'success');
+      });
+      $('#btn-save-notifications').addEventListener('click', () => {
+        setMessage($('#notifications-message'), 'Notification settings saved locally.', 'success');
+      });
+    }
+
+    // ===== SECURITY SETTINGS =====
+    function initSecuritySettings() {
+      $('#btn-change-password').addEventListener('click', () => {
+        const msgEl = $('#security-message');
+        setMessage(msgEl, '');
+        const current = $('#security-current-password').value;
+        const newPass = $('#security-new-password').value;
+        const confirm = $('#security-confirm-password').value;
+        if (!current || !newPass || !confirm) {
+          setMessage(msgEl, 'Fill all password fields.', 'error');
+          return;
+        }
+        if (newPass !== confirm) {
+          setMessage(msgEl, 'New passwords do not match.', 'error');
+          return;
+        }
+        if (!currentUser) {
+          setMessage(msgEl, 'You must be logged in.', 'error');
+          return;
+        }
+        const data = loadData();
+        const user = data.users.find(u => u.username === currentUser.username);
+        if (!user || user.password !== current) {
+          setMessage(msgEl, 'Current password is incorrect.', 'error');
+          return;
+        }
+        user.password = newPass;
+        saveData(data);
+        setMessage(msgEl, 'Password changed successfully.', 'success');
+      });
+    }
+
+    // ===== ACCOUNT SETTINGS (LOAD FROM USER) =====
+    function loadAccountSettingsFromUser() {
+      if (!currentUser) return;
+      const data = loadData();
+      const user = data.users.find(u => u.username === currentUser.username);
+      if (!user) return;
+      $('#account-fullname').value = user.fullName || '';
+      $('#account-username').value = user.username || '';
+      $('#account-email').value = user.email || '';
+      $('#account-phone').value = user.phoneNumber || '';
+      $('#account-address').value = user.address || '';
+    }
+
+    function initAccountSettings() {
+      $('#btn-save-account').addEventListener('click', () => {
+        const msgEl = $('#account-message');
+        setMessage(msgEl, '');
+        if (!currentUser) {
+          setMessage(msgEl, 'You must be logged in.', 'error');
+          return;
+        }
+        const fullName = $('#account-fullname').value.trim();
+        const username = $('#account-username').value.trim();
+        const email = $('#account-email').value.trim();
+        const phone = $('#account-phone').value.trim();
+        const address = $('#account-address').value.trim();
+
+        if (!fullName || !username || !email || !phone) {
+          setMessage(msgEl, 'Please fill all required fields.', 'error');
+          return;
+        }
+        if (!/^[0-9]+$/.test(phone)) {
+          setMessage(msgEl, 'Phone number must be numeric.', 'error');
+          return;
+        }
+
+        const data = loadData();
+        const user = data.users.find(u => u.username === currentUser.username);
+        if (!user) {
+          setMessage(msgEl, 'User not found.', 'error');
+          return;
+        }
+
+        // Check duplicates for username/email
+        if (data.users.some(u => u.username === username && u.id !== user.id)) {
+          setMessage(msgEl, 'Username already in use.', 'error');
+          return;
+        }
+        if (data.users.some(u => u.email === email && u.id !== user.id)) {
+          setMessage(msgEl, 'Email already in use.', 'error');
+          return;
+        }
+
+        user.fullName = fullName;
+        user.username = username;
+        user.email = email;
+        user.phoneNumber = phone;
+        user.address = address;
+        saveData(data);
+        currentUser = user;
+        saveAuth({ username: user.username });
+        updateHeaderUser();
+        setMessage(msgEl, 'Account updated.', 'success');
+      });
+    }
+
+    // ===== INIT AUTH ON LOAD =====
+    function ensureAuthOnLoad() {
+      const auth = loadAuth();
+      if (!auth) {
+        showAuth();
+        return;
+      }
+      const data = loadData();
+      const user = data.users.find(u => u.username === auth.username);
+      if (!user) {
+        showAuth();
+        return;
+      }
+      currentUser = user;
+      updateHeaderUser();
+      showApp();
+      loadAllData();
+    }
+
+    // ===== INIT =====
+    window.addEventListener('DOMContentLoaded', () => {
+      initAuthUI();
+      initLogout();
+      initSidebarNav();
+      initSettingsNav();
+      initThemeSettings();
+      initDateTime();
+      initGlobalSearch();
+      initAddButtons();
+      initTableActions();
+      initPOS();
+      initSimpleSettings();
+      initSecuritySettings();
+      initAccountSettings();
+      ensureAuthOnLoad();
+    });
+  </script>
+</body>
+</html>
