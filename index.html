@@ -1,0 +1,2235 @@
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>TINDERO TRADERS INTERNATIONAL – Front-End Only (3 Themes + Modals)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg-color: #020617;
+      --bg-elevated: #020617;
+      --text-color: #e5e7eb;
+      --muted-text: #9ca3af;
+      --accent-color: #22c55e;
+      --border-color: #1f2937;
+      --danger-color: #ef4444;
+      --font-size-base: 14px;
+    }
+
+    html[data-theme="dark"] {
+      --bg-color: #020617;
+      --bg-elevated: #020617;
+      --text-color: #e5e7eb;
+      --muted-text: #9ca3af;
+      --accent-color: #22c55e;
+      --border-color: #1f2937;
+    }
+
+    html[data-theme="light"] {
+      --bg-color: #f3f4f6;
+      --bg-elevated: #ffffff;
+      --text-color: #111827;
+      --muted-text: #6b7280;
+      --accent-color: #16a34a;
+      --border-color: #e5e7eb;
+    }
+
+    html[data-theme="emerald"] {
+      --bg-color: #022c22;
+      --bg-elevated: #064e3b;
+      --text-color: #ecfdf5;
+      --muted-text: #a7f3d0;
+      --accent-color: #22c55e;
+      --border-color: #047857;
+    }
+
+    html[data-font="small"] { --font-size-base: 13px; }
+    html[data-font="medium"] { --font-size-base: 14px; }
+    html[data-font="large"] { --font-size-base: 16px; }
+
+    * , *::before, *::after { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-size: var(--font-size-base);
+    }
+    .hidden { display: none !important; }
+
+    /* AUTH */
+    #auth-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e293b 0, var(--bg-color) 45%, #000 100%);
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--bg-elevated);
+      border-radius: 16px;
+      padding: 1.75rem 2rem 2rem;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(from 180deg, rgba(34, 197, 94, 0.15), transparent, rgba(59, 130, 246, 0.15), transparent);
+      opacity: 0.4;
+      filter: blur(40px);
+      z-index: -1;
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .auth-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top, var(--accent-color), #16a34a, #0f172a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.6);
+      color: #020617;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .auth-header h1 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .auth-header p {
+      margin: 0.15rem 0 0;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+    .auth-toggle {
+      display: flex;
+      margin-bottom: 1rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0.25rem;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+    .auth-toggle button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 0.5rem 0;
+      border-radius: 999px;
+      cursor: pointer;
+      font-weight: 500;
+      color: var(--muted-text);
+      font-size: 0.85rem;
+    }
+    .auth-toggle button.active {
+      background: radial-gradient(circle at top, var(--accent-color), #16a34a);
+      color: #020617;
+      box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.4);
+    }
+    .auth-form { margin-top: 0.5rem; }
+    .form-group { margin-bottom: 0.75rem; }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+    .input-with-icon {
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0 0.5rem;
+    }
+    html[data-theme="light"] .input-with-icon {
+      background: #f9fafb;
+    }
+    html[data-theme="emerald"] .input-with-icon {
+      background: #022c22;
+    }
+    .input-with-icon .icon {
+      margin-right: 0.25rem;
+      font-size: 0.9rem;
+      color: var(--muted-text);
+    }
+    .input-with-icon input,
+    .input-with-icon select {
+      border: none;
+      background: transparent;
+      padding: 0.5rem 0;
+      flex: 1;
+      outline: none;
+      color: inherit;
+      font-size: 0.9rem;
+    }
+    .password-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .password-toggle {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: var(--muted-text);
+      font-size: 0.9rem;
+      padding-left: 0.25rem;
+    }
+    .form-row-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+    }
+    .checkbox-inline {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      cursor: pointer;
+      color: var(--muted-text);
+    }
+    .primary-btn,
+    .secondary-btn {
+      border-radius: 999px;
+      border: none;
+      padding: 0.55rem 0.75rem;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.08s ease;
+    }
+    .primary-btn {
+      background: radial-gradient(circle at top, var(--accent-color), #16a34a);
+      color: #020617;
+      box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+    }
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 30px rgba(34, 197, 94, 0.7);
+    }
+    .secondary-btn {
+      background: transparent;
+      color: var(--accent-color);
+      border: 1px solid rgba(34, 197, 94, 0.6);
+    }
+    .secondary-btn:hover {
+      background: rgba(34, 197, 94, 0.1);
+    }
+    .danger-btn {
+      background: radial-gradient(circle at top, #ef4444, #b91c1c);
+      color: #f9fafb;
+      border: none;
+    }
+    .full-width { width: 100%; }
+    .link-button {
+      border: none;
+      background: none;
+      color: var(--accent-color);
+      cursor: pointer;
+      font-size: 0.8rem;
+    }
+    .form-message {
+      margin-top: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+
+    /* APP LAYOUT */
+    #app-wrapper {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-color);
+    }
+    .app-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 1.25rem;
+      background: rgba(15, 23, 42, 0.96);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    html[data-theme="light"] .app-header {
+      background: #ffffffee;
+      border-bottom-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .app-header {
+      background: #064e3bee;
+      border-bottom-color: #047857;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .header-left h1 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .header-left span {
+      font-size: 0.75rem;
+      color: var(--muted-text);
+    }
+    .header-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: radial-gradient(circle at top, var(--accent-color), #16a34a, #0f172a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #020617;
+      font-size: 1rem;
+    }
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+    }
+    .header-datetime {
+      color: var(--muted-text);
+    }
+    .header-user {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.8rem;
+    }
+    html[data-theme="light"] .header-user {
+      background: #f9fafb;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .header-user {
+      background: #022c22;
+      border-color: #047857;
+    }
+    .icon-button {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--muted-text);
+    }
+    .icon-button:hover { color: var(--accent-color); }
+    #btn-logout {
+      padding: 0.4rem 0.8rem;
+      border-radius: 8px;
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: var(--accent-color);
+      font-weight: 600;
+    }
+    #btn-logout:hover { background: rgba(34, 197, 94, 0.25); }
+
+    .app-body {
+      display: flex;
+      min-height: calc(100vh - 56px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 220px;
+      background: rgba(15, 23, 42, 0.96);
+      border-right: 1px solid rgba(148, 163, 184, 0.3);
+      padding: 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    html[data-theme="light"] .sidebar {
+      background: #ffffff;
+      border-right-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .sidebar {
+      background: #064e3b;
+      border-right-color: #047857;
+    }
+    .sidebar-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted-text);
+      margin-bottom: 0.25rem;
+    }
+    .sidebar-item {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      color: var(--muted-text);
+      font-size: 0.85rem;
+    }
+    .sidebar-item .icon { font-size: 0.9rem; }
+    .sidebar-item.active,
+    .sidebar-item:hover {
+      background: radial-gradient(circle at left, rgba(34, 197, 94, 0.18), transparent);
+      color: var(--accent-color);
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      flex: 1;
+      padding: 0.75rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      background: var(--bg-color);
+    }
+    .top-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .search-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0.25rem 0.6rem;
+      font-size: 0.85rem;
+    }
+    html[data-theme="light"] .search-wrapper {
+      background: #f9fafb;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .search-wrapper {
+      background: #022c22;
+      border-color: #047857;
+    }
+    .search-wrapper input {
+      border: none;
+      background: transparent;
+      outline: none;
+      flex: 1;
+      color: inherit;
+      font-size: 0.85rem;
+    }
+    .section {
+      display: none;
+      opacity: 0;
+    }
+    .section.visible {
+      display: block;
+      opacity: 1;
+    }
+    .section h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    /* DASHBOARD */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+    }
+    .stat-card {
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    html[data-theme="light"] .stat-card {
+      background: #ffffff;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .stat-card {
+      background: #064e3b;
+      border-color: #047857;
+    }
+    .stat-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .stat-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+    .stat-value {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    /* TABLES */
+    .table-wrapper {
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      overflow: auto;
+    }
+    html[data-theme="light"] .table-wrapper {
+      background: #ffffff;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .table-wrapper {
+      background: #064e3b;
+      border-color: #047857;
+    }
+    .table-wrapper.small { max-height: 260px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th, td {
+      padding: 0.4rem 0.5rem;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+    }
+    html[data-theme="light"] th,
+    html[data-theme="light"] td {
+      border-bottom-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] th,
+    html[data-theme="emerald"] td {
+      border-bottom-color: #047857;
+    }
+    th {
+      text-align: left;
+      background: rgba(15, 23, 42, 0.95);
+      font-weight: 600;
+      color: var(--muted-text);
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+    html[data-theme="light"] th {
+      background: #f9fafb;
+    }
+    html[data-theme="emerald"] th {
+      background: #022c22;
+    }
+    .table-btn {
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .table-btn.edit { color: var(--accent-color); }
+    .table-btn.delete { color: var(--danger-color); }
+
+    /* POS */
+    .pos-layout {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 0.75rem;
+    }
+    .pos-left, .pos-right {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .pos-summary {
+      margin-top: 0.5rem;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.75rem;
+      background: rgba(15, 23, 42, 0.9);
+    }
+    html[data-theme="light"] .pos-summary {
+      background: #ffffff;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .pos-summary {
+      background: #064e3b;
+      border-color: #047857;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.25rem;
+      font-size: 0.85rem;
+    }
+    .summary-row.total {
+      font-weight: 600;
+      border-top: 1px dashed rgba(148, 163, 184, 0.5);
+      padding-top: 0.25rem;
+    }
+    .pos-summary input {
+      width: 80px;
+      border-radius: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      color: inherit;
+      padding: 0.15rem 0.3rem;
+      font-size: 0.8rem;
+    }
+    html[data-theme="light"] .pos-summary input {
+      background: #f9fafb;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .pos-summary input {
+      background: #022c22;
+      border-color: #047857;
+    }
+
+    /* SETTINGS */
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0.75rem;
+    }
+    .settings-sidebar {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    html[data-theme="light"] .settings-sidebar {
+      background: #ffffff;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .settings-sidebar {
+      background: #064e3b;
+      border-color: #047857;
+    }
+    .settings-tab {
+      width: 100%;
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 0.4rem 0.5rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      cursor: pointer;
+      color: var(--muted-text);
+      font-size: 0.85rem;
+    }
+    .settings-tab.active,
+    .settings-tab:hover {
+      background: radial-gradient(circle at left, rgba(34, 197, 94, 0.18), transparent);
+      color: var(--accent-color);
+    }
+    .settings-content {
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 0.75rem;
+    }
+    html[data-theme="light"] .settings-content {
+      background: #ffffff;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .settings-content {
+      background: #064e3b;
+      border-color: #047857;
+    }
+    .settings-panel { display: none; }
+    .settings-panel.visible { display: block; }
+    .settings-panel h3 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+    }
+    .settings-options {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+    .settings-chip {
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      padding: 0.25rem 0.6rem;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.9);
+    }
+    html[data-theme="light"] .settings-chip {
+      background: #f9fafb;
+      border-color: #e5e7eb;
+    }
+    html[data-theme="emerald"] .settings-chip {
+      background: #022c22;
+      border-color: #047857;
+    }
+    .settings-chip:hover {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    /* MODALS */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+    .modal-content {
+      background: var(--bg-elevated);
+      border-radius: 12px;
+      padding: 0.75rem 0.9rem 0.9rem;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+    .modal-content.large { max-width: 520px; }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .modal-body { font-size: 0.85rem; }
+    .divider {
+      margin: 0.75rem 0;
+      border-top: 1px dashed rgba(148, 163, 184, 0.5);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .app-body { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        display: flex;
+        overflow-x: auto;
+      }
+      .settings-layout { grid-template-columns: 1fr; }
+      .pos-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- AUTH -->
+  <div id="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <div class="auth-logo">TT</div>
+        <h1>TINDERO TRADERS INTERNATIONAL</h1>
+        <p>Shop Management System</p>
+      </div>
+
+      <div class="auth-toggle">
+        <button id="btn-show-login" class="active">Login</button>
+        <button id="btn-show-signup">Sign Up</button>
+      </div>
+
+      <!-- LOGIN FORM -->
+      <form id="login-form" class="auth-form">
+        <div class="form-group">
+          <label>Username or Email</label>
+          <div class="input-with-icon">
+            <span class="icon">👤</span>
+            <input type="text" id="login-identifier" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-with-icon">
+            <span class="icon">🔒</span>
+            <div class="password-wrapper">
+              <input type="password" id="login-password" required />
+              <button type="button" class="password-toggle" data-target="login-password">👁</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row-between">
+          <label class="checkbox-inline">
+            <input type="checkbox" id="login-remember" />
+            <span>Remember me</span>
+          </label>
+          <button type="button" id="btn-forgot-password" class="link-button">
+            Forgot password?
+          </button>
+        </div>
+
+        <button type="submit" class="primary-btn full-width">Login</button>
+        <div id="login-message" class="form-message"></div>
+      </form>
+
+      <!-- SIGNUP FORM -->
+      <form id="signup-form" class="auth-form hidden">
+        <div class="form-group">
+          <label>Full Name</label>
+          <div class="input-with-icon">
+            <span class="icon">🧑</span>
+            <input type="text" id="signup-fullname" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Username</label>
+          <div class="input-with-icon">
+            <span class="icon">👤</span>
+            <input type="text" id="signup-username" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <div class="input-with-icon">
+            <span class="icon">📧</span>
+            <input type="email" id="signup-email" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Phone Number</label>
+          <div class="input-with-icon">
+            <span class="icon">📱</span>
+            <input type="text" id="signup-phone" required />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>ID Number (optional)</label>
+          <div class="input-with-icon">
+            <span class="icon">🪪</span>
+            <input type="text" id="signup-idnumber" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-with-icon">
+            <span class="icon">🔒</span>
+            <div class="password-wrapper">
+              <input type="password" id="signup-password" required />
+              <button type="button" class="password-toggle" data-target="signup-password">👁</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="input-with-icon">
+            <span class="icon">✅</span>
+            <div class="password-wrapper">
+              <input type="password" id="signup-confirm-password" required />
+              <button type="button" class="password-toggle" data-target="signup-confirm-password">👁</button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="primary-btn full-width">Create Account</button>
+        <div id="signup-message" class="form-message"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- FORGOT PASSWORD MODAL -->
+  <div id="forgot-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Reset Password</h2>
+        <button class="icon-button" id="close-forgot-modal">✖</button>
+      </div>
+      <div class="modal-body">
+        <p>Enter your username or email to reset password (local only).</p>
+        <div class="form-group">
+          <label>Username or Email</label>
+          <div class="input-with-icon">
+            <span class="icon">👤</span>
+            <input type="text" id="forgot-identifier" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>New Password</label>
+          <div class="input-with-icon">
+            <span class="icon">🔒</span>
+            <input type="password" id="forgot-new-password" />
+          </div>
+        </div>
+        <button id="btn-reset-password" class="secondary-btn full-width">Reset Password</button>
+        <div id="forgot-message" class="form-message"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERIC ENTITY MODAL (ADD/EDIT WORKER/CUSTOMER/ITEM) -->
+  <div id="entity-modal" class="modal hidden">
+    <div class="modal-content large">
+      <div class="modal-header">
+        <h2 id="entity-modal-title">Edit</h2>
+        <button class="icon-button" id="entity-modal-close">✖</button>
+      </div>
+      <div class="modal-body">
+        <form id="entity-form"></form>
+        <div id="entity-modal-message" class="form-message"></div>
+        <div class="divider"></div>
+        <button id="entity-modal-save" class="primary-btn full-width" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app-wrapper" class="hidden">
+    <header class="app-header">
+      <div class="header-left">
+        <div class="header-logo">TT</div>
+        <div>
+          <h1>TINDERO TRADERS INTERNATIONAL</h1>
+          <span>Shop Management System</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="header-datetime" id="header-datetime"></div>
+        <div class="header-user">
+          <span class="icon">👤</span>
+          <span id="header-username">User</span>
+        </div>
+        <button id="btn-logout" class="icon-button" title="Logout">🔓 Logout</button>
+      </div>
+    </header>
+
+    <div class="app-body">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-section">
+          <div class="sidebar-title">Main</div>
+          <button class="sidebar-item active" data-section="dashboard">
+            <span class="icon">📊</span> Dashboard
+          </button>
+          <button class="sidebar-item" data-section="workers">
+            <span class="icon">👷</span> Workers
+          </button>
+          <button class="sidebar-item" data-section="customers">
+            <span class="icon">🧑‍🤝‍🧑</span> Customers
+          </button>
+          <button class="sidebar-item" data-section="inventory">
+            <span class="icon">📦</span> Inventory
+          </button>
+          <button class="sidebar-item" data-section="sales">
+            <span class="icon">🧾</span> Sales & POS
+          </button>
+          <button class="sidebar-item" data-section="accounting">
+            <span class="icon">💰</span> Accounting
+          </button>
+        </div>
+        <div class="sidebar-section">
+          <div class="sidebar-title">System</div>
+          <button class="sidebar-item" data-section="settings">
+            <span class="icon">⚙️</span> Settings
+          </button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="main-content">
+        <div class="top-toolbar">
+          <div class="search-wrapper">
+            <span class="icon">🔍</span>
+            <input type="text" id="global-search" placeholder="Search workers, customers, inventory, transactions..." />
+          </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <section id="section-dashboard" class="section visible">
+          <h2>Dashboard</h2>
+          <div class="cards-grid">
+            <div class="stat-card">
+              <div class="stat-icon">👷</div>
+              <div class="stat-info">
+                <span class="stat-label">Workers</span>
+                <span class="stat-value" id="stat-workers">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🧑‍🤝‍🧑</div>
+              <div class="stat-info">
+                <span class="stat-label">Customers</span>
+                <span class="stat-value" id="stat-customers">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">📦</div>
+              <div class="stat-info">
+                <span class="stat-label">Inventory Items</span>
+                <span class="stat-value" id="stat-items">0</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">💰</div>
+              <div class="stat-info">
+                <span class="stat-label">Transactions</span>
+                <span class="stat-value" id="stat-transactions">0</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WORKERS -->
+        <section id="section-workers" class="section">
+          <div class="section-header">
+            <h2>Workers</h2>
+            <button id="btn-add-worker" class="primary-btn">
+              <span class="icon">➕</span> Add Worker
+            </button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Worker ID</th>
+                  <th>Full Name</th>
+                  <th>Phone</th>
+                  <th>Role</th>
+                  <th>Department</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="workers-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- CUSTOMERS -->
+        <section id="section-customers" class="section">
+          <div class="section-header">
+            <h2>Customers</h2>
+            <button id="btn-add-customer" class="primary-btn">
+              <span class="icon">➕</span> Add Customer
+            </button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer ID</th>
+                  <th>Full Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Type</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="customers-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- INVENTORY -->
+        <section id="section-inventory" class="section">
+          <div class="section-header">
+            <h2>Inventory</h2>
+            <button id="btn-add-item" class="primary-btn">
+              <span class="icon">➕</span> Add Item
+            </button>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Item ID</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Qty</th>
+                  <th>Unit</th>
+                  <th>Selling Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SALES & POS -->
+        <section id="section-sales" class="section">
+          <div class="section-header">
+            <h2>Sales & POS</h2>
+          </div>
+          <div class="pos-layout">
+            <div class="pos-left">
+              <div class="form-group">
+                <label>Search Product</label>
+                <div class="input-with-icon">
+                  <span class="icon">🔍</span>
+                  <input type="text" id="pos-search" />
+                </div>
+              </div>
+              <div class="table-wrapper small">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Item ID</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>Add</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pos-products-body"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="pos-right">
+              <h3>Cart</h3>
+              <div class="table-wrapper small">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Qty</th>
+                      <th>Price</th>
+                      <th>Total</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody id="pos-cart-body"></tbody>
+                </table>
+              </div>
+              <div class="pos-summary">
+                <div class="summary-row">
+                  <span>Subtotal</span>
+                  <span id="pos-subtotal">0.00</span>
+                </div>
+                <div class="summary-row">
+                  <span>Discount</span>
+                  <input type="number" id="pos-discount" value="0" />
+                </div>
+                <div class="summary-row">
+                  <span>Tax (%)</span>
+                  <input type="number" id="pos-tax" value="0" />
+                </div>
+                <div class="summary-row total">
+                  <span>Total</span>
+                  <span id="pos-total">0.00</span>
+                </div>
+                <div class="form-group">
+                  <label>Customer (optional)</label>
+                  <div class="input-with-icon">
+                    <span class="icon">🧑</span>
+                    <input type="text" id="pos-customer" />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Payment Method</label>
+                  <div class="input-with-icon">
+                    <span class="icon">💳</span>
+                    <select id="pos-payment-method">
+                      <option value="Cash">Cash</option>
+                      <option value="Card">Card</option>
+                      <option value="Transfer">Transfer</option>
+                    </select>
+                  </div>
+                </div>
+                <button id="btn-complete-sale" class="primary-btn full-width">
+                  Complete Sale
+                </button>
+                <div id="pos-message" class="form-message"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ACCOUNTING -->
+        <section id="section-accounting" class="section">
+          <div class="section-header">
+            <h2>Payment & Accounting</h2>
+          </div>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Type</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Method</th>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="transactions-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- SETTINGS -->
+        <section id="section-settings" class="section">
+          <h2>Settings</h2>
+          <div class="settings-layout">
+            <aside class="settings-sidebar">
+              <button class="settings-tab active" data-settings="appearance">
+                <span class="icon">🎨</span> Theme & Appearance
+              </button>
+              <button class="settings-tab" data-settings="account">
+                <span class="icon">👤</span> Account Information
+              </button>
+              <button class="settings-tab" data-settings="security">
+                <span class="icon">🔐</span> Password & Security
+              </button>
+              <button class="settings-tab" data-settings="preferences">
+                <span class="icon">⚙️</span> System Preferences
+              </button>
+              <button class="settings-tab" data-settings="notifications">
+                <span class="icon">🔔</span> Notifications
+              </button>
+              <button class="settings-tab" data-settings="privacy">
+                <span class="icon">🛡️</span> Security & Privacy
+              </button>
+            </aside>
+            <div class="settings-content">
+              <div class="settings-panel visible" id="settings-appearance">
+                <h3>Theme & Appearance</h3>
+                <div class="settings-row">
+                  <span>Theme</span>
+                  <div class="settings-options">
+                    <button class="settings-chip" data-theme-option="dark">Dark</button>
+                    <button class="settings-chip" data-theme-option="light">Light</button>
+                    <button class="settings-chip" data-theme-option="emerald">Emerald</button>
+                  </div>
+                </div>
+                <div class="settings-row">
+                  <span>Font Size</span>
+                  <div class="settings-options">
+                    <button class="settings-chip" data-font-option="small">Small</button>
+                    <button class="settings-chip" data-font-option="medium">Medium</button>
+                    <button class="settings-chip" data-font-option="large">Large</button>
+                  </div>
+                </div>
+              </div>
+              <div class="settings-panel" id="settings-account">
+                <h3>Account Information</h3>
+                <p>Local user profile only (no server).</p>
+              </div>
+              <div class="settings-panel" id="settings-security">
+                <h3>Password & Security</h3>
+                <p>Use the Forgot Password option on the login screen to change your password locally.</p>
+              </div>
+              <div class="settings-panel" id="settings-preferences">
+                <h3>System Preferences</h3>
+                <p>Additional preferences can be added here later.</p>
+              </div>
+              <div class="settings-panel" id="settings-notifications">
+                <h3>Notifications</h3>
+                <p>Local-only demo, no external notifications.</p>
+              </div>
+              <div class="settings-panel" id="settings-privacy">
+                <h3>Security & Privacy</h3>
+                <p>All data is stored locally in your browser (localStorage). It does not sync across devices without a backend.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    /* ========= LOCAL STORAGE DATA LAYER (NO BACKEND) ========= */
+    const STORAGE_KEY = "tindero_data_v2";
+
+    function loadData() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        const initial = {
+          users: [
+            {
+              id: "u1",
+              fullName: "Admin User",
+              username: "admin",
+              email: "admin@example.com",
+              phoneNumber: "0000000000",
+              idNumber: "",
+              password: "admin123"
+            }
+          ],
+          currentUserId: null,
+          workers: [],
+          customers: [],
+          inventory: [],
+          transactions: []
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+        return initial;
+      }
+      return JSON.parse(raw);
+    }
+
+    function saveData(data) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+
+    let db = loadData();
+
+    function generateId(prefix) {
+      return prefix + "-" + Math.random().toString(36).substring(2, 8);
+    }
+
+    /* ========= AUTH LOGIC ========= */
+    const authWrapper = document.getElementById("auth-wrapper");
+    const appWrapper = document.getElementById("app-wrapper");
+
+    const loginForm = document.getElementById("login-form");
+    const signupForm = document.getElementById("signup-form");
+
+    const btnShowLogin = document.getElementById("btn-show-login");
+    const btnShowSignup = document.getElementById("btn-show-signup");
+
+    const loginMessage = document.getElementById("login-message");
+    const signupMessage = document.getElementById("signup-message");
+
+    const headerUsername = document.getElementById("header-username");
+
+    const forgotModal = document.getElementById("forgot-modal");
+    const btnForgotPassword = document.getElementById("btn-forgot-password");
+    const btnCloseForgotModal = document.getElementById("close-forgot-modal");
+    const btnResetPassword = document.getElementById("btn-reset-password");
+    const forgotMessage = document.getElementById("forgot-message");
+
+    const btnLogout = document.getElementById("btn-logout");
+
+    // Toggle login/signup
+    btnShowLogin.onclick = () => {
+      btnShowLogin.classList.add("active");
+      btnShowSignup.classList.remove("active");
+      loginForm.classList.remove("hidden");
+      signupForm.classList.add("hidden");
+    };
+    btnShowSignup.onclick = () => {
+      btnShowSignup.classList.add("active");
+      btnShowLogin.classList.remove("active");
+      signupForm.classList.remove("hidden");
+      loginForm.classList.add("hidden");
+    };
+
+    function showApp() {
+      authWrapper.classList.add("hidden");
+      appWrapper.classList.remove("hidden");
+    }
+    function showAuth() {
+      appWrapper.classList.add("hidden");
+      authWrapper.classList.remove("hidden");
+    }
+
+    // Show/hide password eye icon
+    document.querySelectorAll(".password-toggle").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-target");
+        const input = document.getElementById(targetId);
+        if (!input) return;
+        if (input.type === "password") {
+          input.type = "text";
+          btn.textContent = "🙈";
+        } else {
+          input.type = "password";
+          btn.textContent = "👁";
+        }
+      });
+    });
+
+    // Login
+    loginForm.onsubmit = (e) => {
+      e.preventDefault();
+      loginMessage.textContent = "";
+
+      const identifier = document.getElementById("login-identifier").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+
+      const user = db.users.find(
+        u =>
+          u.username === identifier ||
+          u.email === identifier ||
+          u.phoneNumber === identifier
+      );
+
+      if (!user || user.password !== password) {
+        loginMessage.textContent = "Invalid credentials.";
+        return;
+      }
+
+      db.currentUserId = user.id;
+      saveData(db);
+
+      headerUsername.textContent = user.fullName || user.username;
+      loginMessage.textContent = "Login successful.";
+      showApp();
+      loadAllData();
+    };
+
+    // Signup
+    signupForm.onsubmit = (e) => {
+      e.preventDefault();
+      signupMessage.textContent = "";
+
+      const fullName = document.getElementById("signup-fullname").value.trim();
+      const username = document.getElementById("signup-username").value.trim();
+      const email = document.getElementById("signup-email").value.trim();
+      const phoneNumber = document.getElementById("signup-phone").value.trim();
+      const idNumber = document.getElementById("signup-idnumber").value.trim();
+      const password = document.getElementById("signup-password").value.trim();
+      const confirm = document.getElementById("signup-confirm-password").value.trim();
+
+      if (!fullName || !username || !email || !phoneNumber || !password) {
+        signupMessage.textContent = "Fill all required fields.";
+        return;
+      }
+      if (password !== confirm) {
+        signupMessage.textContent = "Passwords do not match.";
+        return;
+      }
+
+      if (db.users.some(u => u.username === username || u.email === email)) {
+        signupMessage.textContent = "Username or email already exists.";
+        return;
+      }
+
+      const newUser = {
+        id: generateId("u"),
+        fullName,
+        username,
+        email,
+        phoneNumber,
+        idNumber,
+        password
+      };
+      db.users.push(newUser);
+      db.currentUserId = newUser.id;
+      saveData(db);
+
+      headerUsername.textContent = newUser.fullName || newUser.username;
+      signupMessage.textContent = "Account created.";
+      showApp();
+      loadAllData();
+    };
+
+    // Forgot password (local)
+    btnForgotPassword.onclick = () => {
+      forgotModal.classList.remove("hidden");
+      forgotMessage.textContent = "";
+    };
+    btnCloseForgotModal.onclick = () => {
+      forgotModal.classList.add("hidden");
+      forgotMessage.textContent = "";
+    };
+    btnResetPassword.onclick = () => {
+      const identifier = document.getElementById("forgot-identifier").value.trim();
+      const newPassword = document.getElementById("forgot-new-password").value.trim();
+
+      if (!identifier || !newPassword) {
+        forgotMessage.textContent = "Fill all fields.";
+        return;
+      }
+
+      const user = db.users.find(
+        u => u.username === identifier || u.email === identifier
+      );
+      if (!user) {
+        forgotMessage.textContent = "User not found.";
+        return;
+      }
+
+      user.password = newPassword;
+      saveData(db);
+      forgotMessage.textContent = "Password updated.";
+    };
+
+    // Logout
+    btnLogout.onclick = () => {
+      db.currentUserId = null;
+      saveData(db);
+      showAuth();
+    };
+
+    // Auto login if currentUserId exists
+    window.addEventListener("load", () => {
+      db = loadData();
+      if (db.currentUserId) {
+        const user = db.users.find(u => u.id === db.currentUserId);
+        if (user) {
+          headerUsername.textContent = user.fullName || user.username;
+          showApp();
+          loadAllData();
+          return;
+        }
+      }
+      showAuth();
+    });
+
+    /* ========= GLOBAL HELPERS + SECTION SWITCHING ========= */
+    const sidebarItems = document.querySelectorAll(".sidebar-item");
+    const sections = document.querySelectorAll(".section");
+
+    sidebarItems.forEach(btn => {
+      btn.onclick = () => {
+        sidebarItems.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = btn.dataset.section;
+        sections.forEach(sec => {
+          sec.classList.remove("visible");
+          if (sec.id === `section-${target}`) {
+            sec.classList.add("visible");
+          }
+        });
+      };
+    });
+
+    function formatMoney(num) {
+      return Number(num || 0).toFixed(2);
+    }
+    function formatDate(ts) {
+      const d = new Date(ts);
+      return d.toLocaleString();
+    }
+
+    function loadAllData() {
+      db = loadData();
+      renderWorkers(db.workers);
+      renderCustomers(db.customers);
+      renderInventory(db.inventory);
+      renderTransactions(db.transactions);
+      renderPOSProducts(db.inventory);
+      updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+    }
+
+    /* ========= GENERIC ENTITY MODAL ========= */
+    const entityModal = document.getElementById("entity-modal");
+    const entityModalTitle = document.getElementById("entity-modal-title");
+    const entityForm = document.getElementById("entity-form");
+    const entityModalMessage = document.getElementById("entity-modal-message");
+    const entityModalClose = document.getElementById("entity-modal-close");
+    const entityModalSave = document.getElementById("entity-modal-save");
+
+    let entityContext = null; // { type: 'worker'|'customer'|'item', mode: 'add'|'edit', id?: string }
+
+    function openEntityModal(type, mode, entity) {
+      entityContext = { type, mode, id: entity ? entity.id : null };
+      entityModalMessage.textContent = "";
+
+      if (type === "worker") {
+        entityModalTitle.textContent = mode === "add" ? "Add Worker" : "Edit Worker";
+        entityForm.innerHTML = `
+          <div class="form-group">
+            <label>Full Name</label>
+            <div class="input-with-icon">
+              <span class="icon">🧑</span>
+              <input type="text" id="worker-fullName" value="${entity ? entity.fullName : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <div class="input-with-icon">
+              <span class="icon">📱</span>
+              <input type="text" id="worker-phone" value="${entity ? entity.phone : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <div class="input-with-icon">
+              <span class="icon">🛠</span>
+              <input type="text" id="worker-role" value="${entity ? entity.role : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Department</label>
+            <div class="input-with-icon">
+              <span class="icon">🏢</span>
+              <input type="text" id="worker-department" value="${entity ? entity.department : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <div class="input-with-icon">
+              <span class="icon">✅</span>
+              <input type="text" id="worker-status" value="${entity ? entity.status : "Active"}" />
+            </div>
+          </div>
+        `;
+      }
+
+      if (type === "customer") {
+        entityModalTitle.textContent = mode === "add" ? "Add Customer" : "Edit Customer";
+        entityForm.innerHTML = `
+          <div class="form-group">
+            <label>Full Name</label>
+            <div class="input-with-icon">
+              <span class="icon">🧑</span>
+              <input type="text" id="customer-fullName" value="${entity ? entity.fullName : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Phone</label>
+            <div class="input-with-icon">
+              <span class="icon">📱</span>
+              <input type="text" id="customer-phone" value="${entity ? entity.phone : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <div class="input-with-icon">
+              <span class="icon">📧</span>
+              <input type="email" id="customer-email" value="${entity ? entity.email : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <div class="input-with-icon">
+              <span class="icon">🏷</span>
+              <input type="text" id="customer-type" value="${entity ? entity.type : "Regular"}" />
+            </div>
+          </div>
+        `;
+      }
+
+      if (type === "item") {
+        entityModalTitle.textContent = mode === "add" ? "Add Item" : "Edit Item";
+        entityForm.innerHTML = `
+          <div class="form-group">
+            <label>Name</label>
+            <div class="input-with-icon">
+              <span class="icon">📦</span>
+              <input type="text" id="item-name" value="${entity ? entity.name : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <div class="input-with-icon">
+              <span class="icon">📂</span>
+              <input type="text" id="item-category" value="${entity ? entity.category : ""}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Quantity</label>
+            <div class="input-with-icon">
+              <span class="icon">🔢</span>
+              <input type="number" id="item-quantity" value="${entity ? entity.quantity : 0}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Unit</label>
+            <div class="input-with-icon">
+              <span class="icon">📏</span>
+              <input type="text" id="item-unit" value="${entity ? entity.unit : "pcs"}" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Selling Price</label>
+            <div class="input-with-icon">
+              <span class="icon">💰</span>
+              <input type="number" id="item-price" value="${entity ? entity.price : 0}" />
+            </div>
+          </div>
+        `;
+      }
+
+      entityModal.classList.remove("hidden");
+    }
+
+    function closeEntityModal() {
+      entityModal.classList.add("hidden");
+      entityContext = null;
+      entityForm.innerHTML = "";
+      entityModalMessage.textContent = "";
+    }
+
+    entityModalClose.onclick = closeEntityModal;
+
+    entityModalSave.onclick = () => {
+      if (!entityContext) return;
+      const { type, mode, id } = entityContext;
+
+      if (type === "worker") {
+        const fullName = document.getElementById("worker-fullName").value.trim();
+        const phone = document.getElementById("worker-phone").value.trim();
+        const role = document.getElementById("worker-role").value.trim();
+        const department = document.getElementById("worker-department").value.trim();
+        const status = document.getElementById("worker-status").value.trim() || "Active";
+
+        if (!fullName) {
+          entityModalMessage.textContent = "Full name is required.";
+          return;
+        }
+
+        if (mode === "add") {
+          const worker = {
+            id: generateId("w"),
+            fullName,
+            phone,
+            role,
+            department,
+            status
+          };
+          db.workers.push(worker);
+        } else {
+          const worker = db.workers.find(w => w.id === id);
+          if (!worker) return;
+          Object.assign(worker, { fullName, phone, role, department, status });
+        }
+        saveData(db);
+        renderWorkers(db.workers);
+        updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+        closeEntityModal();
+      }
+
+      if (type === "customer") {
+        const fullName = document.getElementById("customer-fullName").value.trim();
+        const phone = document.getElementById("customer-phone").value.trim();
+        const email = document.getElementById("customer-email").value.trim();
+        const ctype = document.getElementById("customer-type").value.trim() || "Regular";
+
+        if (!fullName) {
+          entityModalMessage.textContent = "Full name is required.";
+          return;
+        }
+
+        if (mode === "add") {
+          const customer = {
+            id: generateId("c"),
+            fullName,
+            phone,
+            email,
+            type: ctype
+          };
+          db.customers.push(customer);
+        } else {
+          const customer = db.customers.find(c => c.id === id);
+          if (!customer) return;
+          Object.assign(customer, { fullName, phone, email, type: ctype });
+        }
+        saveData(db);
+        renderCustomers(db.customers);
+        updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+        closeEntityModal();
+      }
+
+      if (type === "item") {
+        const name = document.getElementById("item-name").value.trim();
+        const category = document.getElementById("item-category").value.trim();
+        const quantity = Number(document.getElementById("item-quantity").value || 0);
+        const unit = document.getElementById("item-unit").value.trim() || "pcs";
+        const price = Number(document.getElementById("item-price").value || 0);
+
+        if (!name) {
+          entityModalMessage.textContent = "Name is required.";
+          return;
+        }
+
+        if (mode === "add") {
+          const item = {
+            id: generateId("i"),
+            name,
+            category,
+            quantity,
+            unit,
+            price
+          };
+          db.inventory.push(item);
+        } else {
+          const item = db.inventory.find(i => i.id === id);
+          if (!item) return;
+          Object.assign(item, { name, category, quantity, unit, price });
+        }
+        saveData(db);
+        renderInventory(db.inventory);
+        renderPOSProducts(db.inventory);
+        updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+        closeEntityModal();
+      }
+    };
+
+    /* ========= WORKERS MODULE ========= */
+    const workersTableBody = document.getElementById("workers-table-body");
+    const btnAddWorker = document.getElementById("btn-add-worker");
+
+    function renderWorkers(workers) {
+      workersTableBody.innerHTML = "";
+      workers.forEach(worker => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${worker.id}</td>
+          <td>${worker.fullName}</td>
+          <td>${worker.phone}</td>
+          <td>${worker.role}</td>
+          <td>${worker.department}</td>
+          <td>${worker.status}</td>
+          <td>
+            <button class="table-btn edit" data-action="edit-worker" data-id="${worker.id}">✏️</button>
+            <button class="table-btn delete" data-action="delete-worker" data-id="${worker.id}">🗑️</button>
+          </td>
+        `;
+        workersTableBody.appendChild(tr);
+      });
+    }
+
+    btnAddWorker.onclick = () => {
+      openEntityModal("worker", "add", null);
+    };
+
+    workersTableBody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const action = btn.getAttribute("data-action");
+      if (action === "delete-worker") {
+        if (!confirm("Delete this worker?")) return;
+        db.workers = db.workers.filter(w => w.id !== id);
+        saveData(db);
+        renderWorkers(db.workers);
+        updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+      }
+      if (action === "edit-worker") {
+        const worker = db.workers.find(w => w.id === id);
+        if (!worker) return;
+        openEntityModal("worker", "edit", worker);
+      }
+    });
+
+    /* ========= CUSTOMERS MODULE ========= */
+    const customersTableBody = document.getElementById("customers-table-body");
+    const btnAddCustomer = document.getElementById("btn-add-customer");
+
+    function renderCustomers(customers) {
+      customersTableBody.innerHTML = "";
+      customers.forEach(customer => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${customer.id}</td>
+          <td>${customer.fullName}</td>
+          <td>${customer.phone}</td>
+          <td>${customer.email}</td>
+          <td>${customer.type}</td>
+          <td>
+            <button class="table-btn edit" data-action="edit-customer" data-id="${customer.id}">✏️</button>
+            <button class="table-btn delete" data-action="delete-customer" data-id="${customer.id}">🗑️</button>
+          </td>
+        `;
+        customersTableBody.appendChild(tr);
+      });
+    }
+
+    btnAddCustomer.onclick = () => {
+      openEntityModal("customer", "add", null);
+    };
+
+    customersTableBody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const action = btn.getAttribute("data-action");
+      if (action === "delete-customer") {
+        if (!confirm("Delete this customer?")) return;
+        db.customers = db.customers.filter(c => c.id !== id);
+        saveData(db);
+        renderCustomers(db.customers);
+        updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+      }
+      if (action === "edit-customer") {
+        const customer = db.customers.find(c => c.id === id);
+        if (!customer) return;
+        openEntityModal("customer", "edit", customer);
+      }
+    });
+
+    /* ========= INVENTORY MODULE ========= */
+    const inventoryTableBody = document.getElementById("inventory-table-body");
+    const btnAddItem = document.getElementById("btn-add-item");
+
+    function renderInventory(items) {
+      inventoryTableBody.innerHTML = "";
+      items.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.id}</td>
+          <td>${item.name}</td>
+          <td>${item.category}</td>
+          <td>${item.quantity}</td>
+          <td>${item.unit}</td>
+          <td>${formatMoney(item.price)}</td>
+          <td>
+            <button class="table-btn edit" data-action="edit-item" data-id="${item.id}">✏️</button>
+            <button class="table-btn delete" data-action="delete-item" data-id="${item.id}">🗑️</button>
+          </td>
+        `;
+        inventoryTableBody.appendChild(tr);
+      });
+    }
+
+    btnAddItem.onclick = () => {
+      openEntityModal("item", "add", null);
+    };
+
+    inventoryTableBody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const action = btn.getAttribute("data-action");
+      if (action === "delete-item") {
+        if (!confirm("Delete this item?")) return;
+        db.inventory = db.inventory.filter(i => i.id !== id);
+        saveData(db);
+        renderInventory(db.inventory);
+        renderPOSProducts(db.inventory);
+        updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+      }
+      if (action === "edit-item") {
+        const item = db.inventory.find(i => i.id === id);
+        if (!item) return;
+        openEntityModal("item", "edit", item);
+      }
+    });
+
+    /* ========= POS MODULE ========= */
+    const posSearch = document.getElementById("pos-search");
+    const posProductsBody = document.getElementById("pos-products-body");
+    const posCartBody = document.getElementById("pos-cart-body");
+
+    const posSubtotal = document.getElementById("pos-subtotal");
+    const posDiscount = document.getElementById("pos-discount");
+    const posTax = document.getElementById("pos-tax");
+    const posTotal = document.getElementById("pos-total");
+
+    const posCustomer = document.getElementById("pos-customer");
+    const posPaymentMethod = document.getElementById("pos-payment-method");
+    const btnCompleteSale = document.getElementById("btn-complete-sale");
+    const posMessage = document.getElementById("pos-message");
+
+    let cart = [];
+
+    function renderPOSProducts(items) {
+      posProductsBody.innerHTML = "";
+      items.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.id}</td>
+          <td>${item.name}</td>
+          <td>${formatMoney(item.price)}</td>
+          <td>
+            <button class="table-btn edit" data-action="add-to-cart" data-id="${item.id}">➕</button>
+          </td>
+        `;
+        posProductsBody.appendChild(tr);
+      });
+    }
+
+    posProductsBody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const item = db.inventory.find(i => i.id === id);
+      if (!item) return;
+      addToCart(item.id, item.name, item.price);
+    });
+
+    function addToCart(id, name, price) {
+      const existing = cart.find(i => i.id === id);
+      if (existing) {
+        existing.qty++;
+      } else {
+        cart.push({ id, name, price, qty: 1 });
+      }
+      renderCart();
+    }
+
+    function renderCart() {
+      posCartBody.innerHTML = "";
+      cart.forEach(item => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.name}</td>
+          <td>
+            <input type="number" min="1" value="${item.qty}" data-id="${item.id}" class="cart-qty">
+          </td>
+          <td>${formatMoney(item.price)}</td>
+          <td>${formatMoney(item.qty * item.price)}</td>
+          <td>
+            <button class="table-btn delete" data-action="remove-from-cart" data-id="${item.id}">🗑️</button>
+          </td>
+        `;
+        posCartBody.appendChild(tr);
+      });
+      calculateTotals();
+    }
+
+    posCartBody.addEventListener("input", (e) => {
+      if (e.target.classList.contains("cart-qty")) {
+        const id = e.target.getAttribute("data-id");
+        let qty = Number(e.target.value);
+        if (qty < 1) qty = 1;
+        const item = cart.find(i => i.id === id);
+        if (item) item.qty = qty;
+        renderCart();
+      }
+    });
+
+    posCartBody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const action = btn.getAttribute("data-action");
+      if (action === "remove-from-cart") {
+        cart = cart.filter(i => i.id !== id);
+        renderCart();
+      }
+    });
+
+    function calculateTotals() {
+      let subtotal = 0;
+      cart.forEach(item => {
+        subtotal += item.qty * item.price;
+      });
+      const discount = Number(posDiscount.value) || 0;
+      const taxPercent = Number(posTax.value) || 0;
+      const taxAmount = subtotal * (taxPercent / 100);
+      const total = subtotal - discount + taxAmount;
+      posSubtotal.textContent = formatMoney(subtotal);
+      posTotal.textContent = formatMoney(total);
+    }
+
+    posDiscount.oninput = calculateTotals;
+    posTax.oninput = calculateTotals;
+
+    btnCompleteSale.onclick = () => {
+      if (cart.length === 0) {
+        posMessage.textContent = "Cart is empty.";
+        return;
+      }
+      const transaction = {
+        id: generateId("t"),
+        items: cart.map(c => ({ ...c })),
+        subtotal: Number(posSubtotal.textContent),
+        discount: Number(posDiscount.value) || 0,
+        tax: Number(posTax.value) || 0,
+        total: Number(posTotal.textContent),
+        customer: posCustomer.value.trim(),
+        paymentMethod: posPaymentMethod.value,
+        dateTime: Date.now()
+      };
+      db.transactions.push(transaction);
+
+      // reduce inventory quantities
+      transaction.items.forEach(it => {
+        const inv = db.inventory.find(i => i.id === it.id);
+        if (inv) inv.quantity = Number(inv.quantity || 0) - it.qty;
+      });
+
+      saveData(db);
+      cart = [];
+      renderCart();
+      renderInventory(db.inventory);
+      renderTransactions(db.transactions);
+      updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+      posMessage.textContent = "Sale completed.";
+    };
+
+    posSearch.oninput = () => {
+      const query = posSearch.value.toLowerCase();
+      [...posProductsBody.children].forEach(row => {
+        const name = row.children[1].textContent.toLowerCase();
+        row.style.display = name.includes(query) ? "" : "none";
+      });
+    };
+
+    /* ========= TRANSACTIONS MODULE ========= */
+    const transactionsTableBody = document.getElementById("transactions-table-body");
+
+    function renderTransactions(transactions) {
+      transactionsTableBody.innerHTML = "";
+      transactions.forEach(tx => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${tx.id}</td>
+          <td>Sale</td>
+          <td>${tx.items.length} items</td>
+          <td>${formatMoney(tx.total)}</td>
+          <td>${tx.paymentMethod}</td>
+          <td>Completed</td>
+          <td>${formatDate(tx.dateTime)}</td>
+          <td>
+            <button class="table-btn edit" data-action="view-tx" data-id="${tx.id}">📄</button>
+            <button class="table-btn delete" data-action="delete-tx" data-id="${tx.id}">🗑️</button>
+          </td>
+        `;
+        transactionsTableBody.appendChild(tr);
+      });
+    }
+
+    transactionsTableBody.addEventListener("click", (e) => {
+      const btn = e.target.closest("button");
+      if (!btn) return;
+      const id = btn.getAttribute("data-id");
+      const action = btn.getAttribute("data-action");
+      if (action === "view-tx") {
+        const tx = db.transactions.find(t => t.id === id);
+        if (!tx) return;
+        alert(
+          `Transaction ${tx.id}\nItems: ${tx.items.length}\nTotal: ${formatMoney(tx.total)}\nMethod: ${tx.paymentMethod}\nDate: ${formatDate(tx.dateTime)}`
+        );
+      }
+      if (action === "delete-tx") {
+        if (!confirm("Delete this transaction?")) return;
+        db.transactions = db.transactions.filter(t => t.id !== id);
+        saveData(db);
+        renderTransactions(db.transactions);
+        updateDashboardStats(db.workers, db.customers, db.inventory, db.transactions);
+      }
+    });
+
+    /* ========= DASHBOARD STATS + GLOBAL SEARCH ========= */
+    function updateDashboardStats(workers, customers, inventory, transactions) {
+      document.getElementById("stat-workers").textContent = workers.length;
+      document.getElementById("stat-customers").textContent = customers.length;
+      document.getElementById("stat-items").textContent = inventory.length;
+      document.getElementById("stat-transactions").textContent = transactions.length;
+    }
+
+    const globalSearch = document.getElementById("global-search");
+    globalSearch.oninput = () => {
+      const query = globalSearch.value.toLowerCase();
+
+      [...workersTableBody.children].forEach(row => {
+        const match =
+          row.children[1].textContent.toLowerCase().includes(query) ||
+          row.children[2].textContent.toLowerCase().includes(query) ||
+          row.children[3].textContent.toLowerCase().includes(query);
+        row.style.display = match ? "" : "none";
+      });
+
+      [...customersTableBody.children].forEach(row => {
+        const match =
+          row.children[1].textContent.toLowerCase().includes(query) ||
+          row.children[2].textContent.toLowerCase().includes(query) ||
+          row.children[3].textContent.toLowerCase().includes(query);
+        row.style.display = match ? "" : "none";
+      });
+
+      [...inventoryTableBody.children].forEach(row => {
+        const match =
+          row.children[1].textContent.toLowerCase().includes(query) ||
+          row.children[2].textContent.toLowerCase().includes(query);
+        row.style.display = match ? "" : "none";
+      });
+
+      [...transactionsTableBody.children].forEach(row => {
+        const match =
+          row.children[0].textContent.toLowerCase().includes(query) ||
+          row.children[3].textContent.toLowerCase().includes(query);
+        row.style.display = match ? "" : "none";
+      });
+    };
+
+    /* ========= SETTINGS + THEME + FONT ========= */
+    function updateDateTime() {
+      const el = document.getElementById("header-datetime");
+      const now = new Date();
+      el.textContent = now.toLocaleString();
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    const settingsTabs = document.querySelectorAll(".settings-tab");
+    const settingsPanels = document.querySelectorAll(".settings-panel");
+
+    settingsTabs.forEach(tab => {
+      tab.onclick = () => {
+        settingsTabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        const target = tab.dataset.settings;
+        settingsPanels.forEach(panel => {
+          panel.classList.remove("visible");
+          if (panel.id === `settings-${target}`) {
+            panel.classList.add("visible");
+          }
+        });
+      };
+    });
+
+    function setTheme(theme) {
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem("theme", theme);
+    }
+    function loadTheme() {
+      const saved = localStorage.getItem("theme") || "dark";
+      setTheme(saved);
+    }
+    loadTheme();
+
+    function setFontSize(size) {
+      document.documentElement.setAttribute("data-font", size);
+      localStorage.setItem("fontSize", size);
+    }
+    function loadFontSize() {
+      const saved = localStorage.getItem("fontSize") || "medium";
+      setFontSize(saved);
+    }
+    loadFontSize();
+
+    document.addEventListener("click", (e) => {
+      if (e.target.matches("[data-theme-option]")) {
+        const theme = e.target.getAttribute("data-theme-option");
+        setTheme(theme);
+      }
+      if (e.target.matches("[data-font-option]")) {
+        const size = e.target.getAttribute("data-font-option");
+        setFontSize(size);
+      }
+    });
+
+    console.log("TINDERO TRADERS INTERNATIONAL — Front-End Only System Loaded (3 Themes + Modals)");
+  </script>
+</body>
+</html>
